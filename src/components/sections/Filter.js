@@ -54,7 +54,7 @@ const Filter = () => {
       toggleable
       summary={(
         <p>
-          You can optionally filter which nodes are shown on this stage, by creating
+          You can optionally filter which nodes or edges are shown on this stage, by creating
           one or more rules using the options below.
         </p>
       )}
