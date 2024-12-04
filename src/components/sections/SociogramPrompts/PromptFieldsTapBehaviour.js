@@ -5,12 +5,14 @@ import { change, formValueSelector } from 'redux-form';
 import * as Fields from '@codaco/ui/lib/components/Fields';
 import { Section, Row } from '@components/EditorLayout';
 import ValidatedField from '@components/Form/ValidatedField';
+import Tip from '@components/Tip';
 import EntitySelectField from '../fields/EntitySelectField/EntitySelectField';
 import DetachedField from '../../DetachedField';
 import VariablePicker from '../../Form/Fields/VariablePicker/VariablePicker';
 import { getHighlightVariablesForSubject } from './selectors';
 import { actionCreators as codebookActions } from '../../../ducks/modules/protocol/codebook';
-
+import { asOptions } from '../../../selectors/utils';
+import { getEdgeTypes } from '../../../selectors/codebook';
 // TODO: Move this somewhere else!
 // This was created as part of removing the HOC pattern used throughout the app.
 // It replaces withCreateVariableHandler. Other uses of this handler could be
@@ -101,6 +103,26 @@ const TapBehaviour = ({
     return true;
   };
 
+  const edgeOptions = useSelector((state) => asOptions(getEdgeTypes(state)));
+
+  // get selected value
+  const selectedValue = useSelector((state) => getFormValue(state, 'edges.create'));
+
+  // get the current edge filters from the stage
+  const getStageValue = formValueSelector('edit-stage');
+  const currentFilters = useSelector((state) => getStageValue(state, 'filter'));
+  const edgeFilters = currentFilters.rules.filter((rule) => rule.type === 'edge');
+
+  // get selected edges from options
+  const selectedEdges = edgeOptions.filter((option) => option.value === selectedValue);
+
+  // TODO: look at this logic to see if it's correct for all cases
+  const selectedEdgesNotInFilters = selectedEdges.filter(
+    (selectedEdge) => !edgeFilters.some(
+      (edgeFilter) => edgeFilter.options.type === selectedEdge.value,
+    ),
+  );
+
   return (
     <Section
       group
@@ -168,6 +190,16 @@ const TapBehaviour = ({
           />
         )}
         { tapBehaviour === TAP_BEHAVIOURS.CREATE_EDGES && (
+        <>
+          {selectedEdgesNotInFilters.length > 0 && (
+          <Tip type="warning">
+            <p>
+              The selected edge type is not currently included in the stage-level network filtering.
+              If it is not included, the edge will not be displayed when it is created.
+            </p>
+          </Tip>
+          )}
+
           <ValidatedField
             entityType="edge"
             name="edges.create"
@@ -175,6 +207,7 @@ const TapBehaviour = ({
             label="Create edges of the following type"
             validation={{ required: true }}
           />
+        </>
         )}
       </Row>
     </Section>

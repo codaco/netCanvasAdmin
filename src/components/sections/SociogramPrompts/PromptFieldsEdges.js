@@ -30,6 +30,16 @@ const DisplayEdges = ({ form, entity, type }) => {
     dispatch(change(form, 'edges.display', displayEdgesWithCreatedEdge));
   }, [createEdge]);
 
+  // get the current filters from the stage
+  const getStageValue = formValueSelector('edit-stage');
+  const currentFilters = useSelector((state) => getStageValue(state, 'filter'));
+  const edgeFilters = currentFilters.rules.filter((rule) => rule.type === 'edge');
+
+  // TODO: look at this logic to see if it's correct for all cases
+  const selectedEdgesNotInFilters = displayEdges.filter(
+    (selectedEdge) => !edgeFilters.some((edgeFilter) => edgeFilter.options.type === selectedEdge),
+  );
+
   return (
     <>
       <Section
@@ -59,6 +69,15 @@ const DisplayEdges = ({ form, entity, type }) => {
         }}
       >
         <Row>
+          {selectedEdgesNotInFilters.length > 0 && (
+          <Tip type="warning">
+            <p>
+              One or more of the selected edge types are not currently included in the
+              stage-level network filtering. If they are not included, the edges will not be
+              displayed.
+            </p>
+          </Tip>
+          )}
           { hasDisabledEdgeOption && (
             <Tip>
               <p>
