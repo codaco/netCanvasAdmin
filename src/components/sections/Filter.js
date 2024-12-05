@@ -33,30 +33,24 @@ const Filter = () => {
   );
 
   // get edge creation and display values for edges across all prompts
-  // will be used to conditionally render a warning tip
-
-  // start by getting the prompts
+  let shouldShowWarning = false;
   const prompts = useSelector((state) => getFormValue(state, 'prompts'));
 
-  const promptsWithEdges = prompts.filter(
-    (prompt) => prompt?.edges?.create || prompt?.edges?.display,
-  );
+  if (prompts) {
+    const edgeCreationValues = prompts
+      .filter((prompt) => prompt?.edges?.create)
+      .map((prompt) => prompt.edges.create);
 
-  const edgeCreationValues = promptsWithEdges.map(
-    (prompt) => prompt.edges.create,
-  );
+    const edgeDisplayValues = prompts
+      .filter((prompt) => prompt?.edges?.display)
+      .flatMap((prompt) => prompt.edges.display);
 
-  const edgeDisplayValues = promptsWithEdges.flatMap(
-    (prompt) => prompt.edges.display,
-  );
-
-  let shouldShowWarning = false;
-
-  if (edgeCreationValues.length > 0 || edgeDisplayValues.length > 0) {
-    shouldShowWarning = getEdgeFilteringWarning(
-      currentValue.rules,
-      [...edgeCreationValues, ...edgeDisplayValues],
-    );
+    if (edgeCreationValues.length > 0 || edgeDisplayValues.length > 0) {
+      shouldShowWarning = getEdgeFilteringWarning(
+        currentValue.rules,
+        [...edgeCreationValues, ...edgeDisplayValues],
+      );
+    }
   }
 
   const handleToggleChange = useCallback(

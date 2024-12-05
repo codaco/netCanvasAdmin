@@ -9,7 +9,7 @@ import Tip from '@components/Tip';
 import EntitySelectField from '../fields/EntitySelectField/EntitySelectField';
 import DetachedField from '../../DetachedField';
 import VariablePicker from '../../Form/Fields/VariablePicker/VariablePicker';
-import { getHighlightVariablesForSubject, getEdgeFilteringWarning } from './selectors';
+import { getHighlightVariablesForSubject, getEdgeFilteringWarning, getEdgeFilters } from './selectors';
 import { actionCreators as codebookActions } from '../../../ducks/modules/protocol/codebook';
 
 // TODO: Move this somewhere else!
@@ -104,11 +104,7 @@ const TapBehaviour = ({
 
   const selectedValue = useSelector((state) => getFormValue(state, 'edges.create'));
 
-  // get the current edge filters from the stage
-  const getStageValue = formValueSelector('edit-stage');
-  const currentFilters = useSelector((state) => getStageValue(state, 'filter'));
-  const edgeFilters = currentFilters.rules.filter((rule) => rule.type === 'edge');
-
+  const edgeFilters = useSelector((state) => getEdgeFilters(state));
   const showNetworkFilterWarning = getEdgeFilteringWarning(edgeFilters, [selectedValue]);
 
   return (

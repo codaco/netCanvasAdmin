@@ -7,7 +7,7 @@ import { change, Field, formValueSelector } from 'redux-form';
 import * as Fields from '@codaco/ui/lib/components/Fields';
 import { Section, Row } from '@components/EditorLayout';
 import Tip from '../../Tip';
-import { getEdgeFilteringWarning, getEdgesForSubject } from './selectors';
+import { getEdgeFilteringWarning, getEdgeFilters, getEdgesForSubject } from './selectors';
 
 const DisplayEdges = ({ form, entity, type }) => {
   const dispatch = useDispatch();
@@ -30,11 +30,7 @@ const DisplayEdges = ({ form, entity, type }) => {
     dispatch(change(form, 'edges.display', displayEdgesWithCreatedEdge));
   }, [createEdge]);
 
-  // get the current filters from the stage
-  const getStageValue = formValueSelector('edit-stage');
-  const currentFilters = useSelector((state) => getStageValue(state, 'filter'));
-  const edgeFilters = currentFilters.rules.filter((rule) => rule.type === 'edge');
-
+  const edgeFilters = useSelector((state) => getEdgeFilters(state));
   const shouldShowNetworkFilterWarning = getEdgeFilteringWarning(edgeFilters, displayEdges);
 
   return (
