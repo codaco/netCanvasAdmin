@@ -7,7 +7,7 @@ import { change, Field, formValueSelector } from 'redux-form';
 import * as Fields from '@codaco/ui/lib/components/Fields';
 import { Section, Row } from '@components/EditorLayout';
 import Tip from '../../Tip';
-import { getEdgesForSubject } from './selectors';
+import { getEdgeFilteringWarning, getEdgesForSubject } from './selectors';
 
 const DisplayEdges = ({ form, entity, type }) => {
   const dispatch = useDispatch();
@@ -35,10 +35,7 @@ const DisplayEdges = ({ form, entity, type }) => {
   const currentFilters = useSelector((state) => getStageValue(state, 'filter'));
   const edgeFilters = currentFilters.rules.filter((rule) => rule.type === 'edge');
 
-  // TODO: look at this logic to see if it's correct for all cases
-  const selectedEdgesNotInFilters = displayEdges.filter(
-    (selectedEdge) => !edgeFilters.some((edgeFilter) => edgeFilter.options.type === selectedEdge),
-  );
+  const shouldShowNetworkFilterWarning = getEdgeFilteringWarning(edgeFilters, displayEdges);
 
   return (
     <>
@@ -69,7 +66,7 @@ const DisplayEdges = ({ form, entity, type }) => {
         }}
       >
         <Row>
-          {selectedEdgesNotInFilters.length > 0 && (
+          {shouldShowNetworkFilterWarning && (
           <Tip type="warning">
             <p>
               One or more of the selected edge types are not currently included in the

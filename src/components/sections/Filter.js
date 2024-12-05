@@ -8,6 +8,7 @@ import {
   Filter as FilterQuery, withFieldConnector, withStoreConnector, ruleValidator,
 } from '../Query';
 import Tip from '../Tip';
+import { getEdgeFilteringWarning } from './SociogramPrompts/selectors';
 
 const FilterField = withFieldConnector(withStoreConnector(FilterQuery));
 
@@ -49,15 +50,14 @@ const Filter = () => {
     (prompt) => prompt.edges.display,
   );
 
-  const ruleEdgeTypes = currentValue?.rules.filter((rule) => rule.type === 'edge').map((rule) => rule.options.type);
-  // show warning if there are creation or display values that will not be shown based on filters
-  const shouldShowWarning = edgeCreationValues.some(
-    (edgeCreationValue) => !ruleEdgeTypes.includes(edgeCreationValue),
-  ) || edgeDisplayValues.some(
-    (edgeDisplayValue) => !edgeDisplayValue.some(
-      (edge) => ruleEdgeTypes.includes(edge),
-    ),
-  );
+  let shouldShowWarning = false;
+
+  if (edgeCreationValues.length > 0 || edgeDisplayValues.length > 0) {
+    shouldShowWarning = getEdgeFilteringWarning(
+      currentValue.rules,
+      [...edgeCreationValues, ...edgeDisplayValues],
+    );
+  }
 
   const handleToggleChange = useCallback(
     async (newState) => {
