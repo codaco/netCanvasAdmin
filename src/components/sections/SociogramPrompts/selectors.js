@@ -46,12 +46,16 @@ export const getEdgeFilters = (state) => {
   return edgeFilters;
 };
 
-// compare selected edges to edge filters
-// there are four cases to consider:
-// 1. selected edge is in the filters with rule EXISTS -- no warning
-// 2. selected edge is not in the filters with rule EXISTS -- show a warning
-// 3. selected edge is in the filters with rule DOES_NOT_EXIST -- show a warning
-// 4. selected edge is not in the filters with rule DOES_NOT_EXIST -- no warning
+/**
+ * Compare selected edges to edge filters to determine if a warning should be shown
+ * @param {Array} filters - edge filters
+ * @param {Array} edges - selected edges
+ * There are four main cases to consider:
+ * 1. Selected edge is in the filters with rule EXISTS -- no warning
+ * 2. Selected edge is not in the filters with rule EXISTS -- show a warning
+ * 3. Selected edge is in the filters with rule DOES_NOT_EXIST -- show a warning
+ * 4. Selected edge is not in the filters with rule DOES_NOT_EXIST -- no warning
+ */
 
 export const getEdgeFilteringWarning = (filters, edges) => {
   const existFilters = filters.filter((rule) => rule.options.operator === 'EXISTS');
