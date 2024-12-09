@@ -178,8 +178,10 @@ const TapBehaviour = ({
           {showNetworkFilterWarning && (
           <Tip type="warning">
             <p>
-              The selected edge type is not currently included in the stage-level network filtering.
-              If it is not included, the edge will not be displayed when it is created.
+              Stage level network filtering is enabled, but the edge type you want to create
+              on this prompt is not currently included in the filter. This means that these
+              edges may not be displayed. Either remove the stage-level network filtering,
+              or add these edge types to the filter to resolve this issue.
             </p>
           </Tip>
           )}

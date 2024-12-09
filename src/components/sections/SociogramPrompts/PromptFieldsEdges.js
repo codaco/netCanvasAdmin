@@ -65,9 +65,11 @@ const DisplayEdges = ({ form, entity, type }) => {
           {shouldShowNetworkFilterWarning && (
           <Tip type="warning">
             <p>
-              One or more of the selected edge types are not currently included in the
-              stage-level network filtering. If they are not included, the edges will not be
-              displayed.
+              Stage level network filtering is enabled, but one or more of the edge types
+              you have configured to display on this prompt are not currently included in the
+              filter. This means that these edges may not be displayed. Either remove the
+              stage-level network filtering, or add these edge types to the filter to resolve this
+              issue.
             </p>
           </Tip>
           )}
