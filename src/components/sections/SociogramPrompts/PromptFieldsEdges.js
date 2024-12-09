@@ -7,7 +7,8 @@ import { change, Field, formValueSelector } from 'redux-form';
 import * as Fields from '@codaco/ui/lib/components/Fields';
 import { Section, Row } from '@components/EditorLayout';
 import Tip from '../../Tip';
-import { getEdgeFilteringWarning, getEdgeFilters, getEdgesForSubject } from './selectors';
+import { getEdgeFilters, getEdgesForSubject } from './selectors';
+import getEdgeFilteringWarning from './utils';
 
 const DisplayEdges = ({ form, entity, type }) => {
   const dispatch = useDispatch();

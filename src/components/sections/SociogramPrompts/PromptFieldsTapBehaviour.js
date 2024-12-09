@@ -9,8 +9,9 @@ import Tip from '@components/Tip';
 import EntitySelectField from '../fields/EntitySelectField/EntitySelectField';
 import DetachedField from '../../DetachedField';
 import VariablePicker from '../../Form/Fields/VariablePicker/VariablePicker';
-import { getHighlightVariablesForSubject, getEdgeFilteringWarning, getEdgeFilters } from './selectors';
+import { getHighlightVariablesForSubject, getEdgeFilters } from './selectors';
 import { actionCreators as codebookActions } from '../../../ducks/modules/protocol/codebook';
+import getEdgeFilteringWarning from './utils';
 
 // TODO: Move this somewhere else!
 // This was created as part of removing the HOC pattern used throughout the app.
@@ -104,7 +105,7 @@ const TapBehaviour = ({
 
   const selectedValue = useSelector((state) => getFormValue(state, 'edges.create'));
 
-  const edgeFilters = useSelector((state) => getEdgeFilters(state));
+  const edgeFilters = useSelector(getEdgeFilters);
   const showNetworkFilterWarning = getEdgeFilteringWarning(edgeFilters, [selectedValue]);
 
   return (

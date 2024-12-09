@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { change, Field, formValueSelector } from 'redux-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { Section } from '@components/EditorLayout';
@@ -8,7 +8,7 @@ import {
   Filter as FilterQuery, withFieldConnector, withStoreConnector, ruleValidator,
 } from '../Query';
 import Tip from '../Tip';
-import { getEdgeFilteringWarning } from './SociogramPrompts/selectors';
+import getEdgeFilteringWarning from './SociogramPrompts/utils';
 
 const FilterField = withFieldConnector(withStoreConnector(FilterQuery));
 
@@ -33,25 +33,27 @@ const Filter = () => {
   );
 
   // get edge creation and display values for edges across all prompts
-  let shouldShowWarning = false;
   const prompts = useSelector((state) => getFormValue(state, 'prompts'));
 
-  if (prompts) {
-    const edgeCreationValues = prompts
-      .filter((prompt) => prompt?.edges?.create)
-      .map((prompt) => prompt.edges.create);
-
-    const edgeDisplayValues = prompts
-      .filter((prompt) => prompt?.edges?.display)
-      .flatMap((prompt) => prompt.edges.display);
-
+  const { edgeCreationValues, edgeDisplayValues } = useMemo(() => {
+    if (!prompts) return { edgeCreationValues: [], edgeDisplayValues: [] };
+    const creationValues = [];
+    const displayValues = [];
+    prompts.forEach((prompt) => {
+      if (prompt?.edges?.create) creationValues.push(prompt.edges.create);
+      if (prompt?.edges?.display) displayValues.push(...prompt.edges.display);
+    });
+    return { edgeCreationValues: creationValues, edgeDisplayValues: displayValues };
+  }, [prompts]);
+  const shouldShowWarning = useMemo(() => {
     if (edgeCreationValues.length > 0 || edgeDisplayValues.length > 0) {
-      shouldShowWarning = getEdgeFilteringWarning(
+      return getEdgeFilteringWarning(
         currentValue.rules,
         [...edgeCreationValues, ...edgeDisplayValues],
       );
     }
-  }
+    return false;
+  }, [currentValue, edgeCreationValues, edgeDisplayValues]);
 
   const handleToggleChange = useCallback(
     async (newState) => {
