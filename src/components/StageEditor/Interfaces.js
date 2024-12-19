@@ -27,6 +27,8 @@ import {
   SkipLogic,
   TieStrengthCensusPrompts,
   Title,
+  MapOptions,
+  GeospatialPrompts,
 } from '@components/sections';
 import { FilteredNodeType } from '@components/sections/NodeType';
 
@@ -189,6 +191,15 @@ const TieStrengthCensus = {
   documentation: 'https://documentation.networkcanvas.com/interface-documentation/tie-strength-census/',
 };
 
+const Geospatial = {
+  sections: [
+    NodeType,
+    MapOptions,
+    GeospatialPrompts,
+  ],
+  documentation: 'https://documentation.networkcanvas.com/interface-documentation/tie-strength-census/', // TODO
+};
+
 const interfaces = {
   AlterEdgeForm,
   AlterForm,
@@ -203,6 +214,7 @@ const interfaces = {
   OrdinalBin,
   Sociogram,
   TieStrengthCensus,
+  Geospatial,
 };
 
 const emptyInterface = {

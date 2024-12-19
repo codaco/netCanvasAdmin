@@ -112,6 +112,14 @@ export const INTERFACE_TYPES = [
   },
   {
     category: CATEGORIES.INTERPRETERS,
+    tags: [TAGS.NODE_ATTRIBUTES],
+    keywords: 'alter attributes node interpreter map',
+    type: 'Geospatial',
+    title: 'Geospatial Interface',
+    description: 'An interface that captures geospatial data by allowing the user to select items on a map',
+  },
+  {
+    category: CATEGORIES.INTERPRETERS,
     tags: [TAGS.EDGE_ATTRIBUTES],
     keywords: 'edge attributes form forms edge interpreter',
     type: 'AlterEdgeForm',
