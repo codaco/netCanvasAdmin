@@ -12,15 +12,15 @@ const GeoDataSource = (props) => {
     input,
   } = props;
   return (
-      <File
-        type="geospatial"
-        selected={input.value}
+    <File
+      type="geospatial"
+      selected={input.value}
         // eslint-disable-next-line react/jsx-props-no-spreading
-        {...props}
-      >
-        { (id) => <NetworkThumbnail id={id} /> }
-      </File>
-    )
+      {...props}
+    >
+      { (id) => <NetworkThumbnail id={id} /> }
+    </File>
+  );
 };
 
 GeoDataSource.propTypes = {

@@ -1,5 +1,8 @@
 import React from 'react';
+import { compose } from 'recompose';
+
 import * as Fields from '@codaco/ui/lib/components/Fields';
+import withMapFormToProps from '@components/enhancers/withMapFormToProps';
 import { Section, Row } from '../EditorLayout';
 import ValidatedField from '../Form/ValidatedField';
 import { getFieldId } from '../../utils/issues';
@@ -7,19 +10,26 @@ import { getFieldId } from '../../utils/issues';
 import ColorPicker from '../Form/Fields/ColorPicker';
 import getPalette from '../TypeEditor/getPalette';
 import GeoDataSource from '../Form/Fields/GeoDataSource';
+import useVariablesFromExternalData from '../../hooks/useVariablesFromExternalData';
 
 // config map options
 
 /*
       mapOptions: {
-        center: [-87.6298, 41.8781], -> string (should this be selectable on a map??)
-        token: 'asset3', -> needs to be uploaded
-        initialZoom: 12, -> int
+        center: z.tuple([z.number(), z.number()]),
+        token: z.string(),
+        initialZoom: z.number().int(),
+        data: z.string(),
+        color: z.string(),
+        propToSelect: z.string(),
       },
 */
 
-const MapOptions = ({ entity }) => {
-  const { name: paletteName, size: paletteSize } = getPalette(entity);
+const MapOptions = (props) => {
+  const { mapOptions } = props;
+  // const { name: paletteName, size: paletteSize } = getPalette(mapOptions.entity);
+
+  const { variables: variableOptions } = useVariablesFromExternalData(mapOptions?.dataSource, true, 'geojson');
 
   return (
     <>
@@ -54,14 +64,22 @@ const MapOptions = ({ entity }) => {
           <div id={getFieldId('dataSource')} data-name="Layer data-source" />
           <ValidatedField
             component={GeoDataSource}
-            name="dataSource"
+            name="mapOptions.dataSource"
             id="dataSource"
-            validation={{ required: false }}
+            validation={{ required: true }}
           />
         </Row>
-        <Row>
-          This will be a checkbox group from the uploaded geojson file
-        </Row>
+        {variableOptions && variableOptions.length > 0 && (
+          <Row>
+            <ValidatedField
+              label="Which property should be used for fill"
+              name="mapOptions.propToSelect"
+              component={Fields.RadioGroup}
+              options={variableOptions}
+              validation={{ required: true }}
+            />
+          </Row>
+        )}
       </Section>
       <Section
         title="Color"
@@ -75,8 +93,8 @@ const MapOptions = ({ entity }) => {
         <ValidatedField
           component={ColorPicker}
           name="color"
-          palette={paletteName}
-          paletteRange={paletteSize}
+          // palette={paletteName}
+          // paletteRange={paletteSize}
           validation={{ required: false }}
         />
       </Section>
@@ -115,4 +133,6 @@ const MapOptions = ({ entity }) => {
   );
 };
 
-export default MapOptions;
+export default compose(
+  withMapFormToProps(['mapOptions']),
+)(MapOptions);

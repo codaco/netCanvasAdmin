@@ -101,3 +101,9 @@ export const validateAsset = async (filePath) => {
 
   return true;
 };
+
+export const getGeoJsonVariables = async (filePath) => {
+  // process GeoJSON
+  const geoJson = await fs.readJson(filePath);
+  return Object.keys(geoJson.features[0].properties);
+};

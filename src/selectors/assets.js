@@ -1,6 +1,6 @@
 import path from 'path';
 import { get } from 'lodash';
-import { getNetworkVariables } from '@app/utils/protocols/assetTools';
+import { getNetworkVariables, getGeoJsonVariables } from '@app/utils/protocols/assetTools';
 import { getWorkingPath } from './session';
 import { getAssetManifest } from './protocol';
 
@@ -41,4 +41,17 @@ export const makeGetNetworkAssetVariables = (state) => async (dataSource, asOpti
   }
 
   return variables;
+};
+
+export const makeGetGeoJsonAssetVariables = (state) => async (dataSource) => {
+  const assetPath = getAssetPath(state, dataSource);
+
+  if (!assetPath) { return null; }
+
+  const variables = await getGeoJsonVariables(assetPath);
+
+  const variableOptions = variables
+    .map((attribute) => ({ label: attribute, value: attribute }));
+
+  return variableOptions;
 };
