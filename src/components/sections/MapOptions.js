@@ -6,7 +6,7 @@ import { getFieldId } from '../../utils/issues';
 
 import ColorPicker from '../Form/Fields/ColorPicker';
 import getPalette from '../TypeEditor/getPalette';
-import DataSource from '../Form/Fields/DataSource';
+import GeoDataSource from '../Form/Fields/GeoDataSource';
 
 // config map options
 
@@ -51,12 +51,12 @@ const MapOptions = ({ entity }) => {
             )}
       >
         <Row>
-          <div id={getFieldId('dataSource')} data-name="Roster data-source" />
+          <div id={getFieldId('dataSource')} data-name="Layer data-source" />
           <ValidatedField
-            component={DataSource}
+            component={GeoDataSource}
             name="dataSource"
             id="dataSource"
-            validation={{ required: true }}
+            validation={{ required: false }}
           />
         </Row>
         <Row>
@@ -77,7 +77,7 @@ const MapOptions = ({ entity }) => {
           name="color"
           palette={paletteName}
           paletteRange={paletteSize}
-          validation={{ required: true }}
+          validation={{ required: false }}
         />
       </Section>
       <Section
@@ -95,7 +95,7 @@ const MapOptions = ({ entity }) => {
           name="mapOptions.center"
           component={Fields.Text}
           label="Initial Center"
-          validation={{ required: true }}
+          validation={{ required: false }}
           placeholder="[Longitude, Latitude]"
         />
 
@@ -106,7 +106,7 @@ const MapOptions = ({ entity }) => {
           label="Initial Map Zoom"
           type="number"
           normalize={(value) => parseInt(value, 10) || value}
-          validation={{ required: true, positiveNumber: true }}
+          validation={{ required: false, positiveNumber: true }}
         />
 
       </Section>

@@ -11,6 +11,7 @@ const ASSET_TYPES = [
   { label: 'Video', value: 'video' },
   { label: 'Audio', value: 'audio' },
   { label: 'Network', value: 'network' },
+  { label: 'GeoJSON', value: 'geospatial' },
 ];
 
 const Assets = ({

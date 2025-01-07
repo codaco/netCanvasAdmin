@@ -11,7 +11,7 @@ import { SUPPORTED_EXTENSION_TYPE_MAP } from '@app/config';
  * Uses the mime type where possible, and falls back to the file extension.
  *
  * @param {string} asset - the filename of the asset
- * @return {string} Returns one of network, image, audio, video or returns false if type
+ * @return {string} Returns one of network, image, audio, video, geojson, or returns false if type
  * is unsupported
  */
 export const getSupportedAssetType = (filePath) => {

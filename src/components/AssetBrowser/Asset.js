@@ -15,6 +15,7 @@ const ASSET_COMPONENTS = {
   video: Thumbnails.Video,
   audio: Thumbnails.Audio,
   network: Thumbnails.Network,
+  geospatial: Thumbnails.Network, // TODO: Add geospatial thumbnail
 };
 
 const Asset = ({
