@@ -29,7 +29,7 @@ const PromptFields = ({
   const handleNewVariable = (name) => {
     openNewVariableWindow(
       { initialValues: { name, type: 'text' } },
-      { field: 'alterVariable' },
+      { field: 'variable' },
     );
   };
 

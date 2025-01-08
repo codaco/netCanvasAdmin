@@ -5,10 +5,10 @@ import * as Fields from '@codaco/ui/lib/components/Fields';
 import withMapFormToProps from '@components/enhancers/withMapFormToProps';
 import { Section, Row } from '../EditorLayout';
 import ValidatedField from '../Form/ValidatedField';
-import { getFieldId } from '../../utils/issues';
 
 import ColorPicker from '../Form/Fields/ColorPicker';
 import GeoDataSource from '../Form/Fields/GeoDataSource';
+import GeoAPIKey from '../Form/Fields/GeoAPIKey';
 import useVariablesFromExternalData from '../../hooks/useVariablesFromExternalData';
 
 // config map options
@@ -42,10 +42,10 @@ const MapOptions = (props) => {
           </p>
     )}
       >
-        <div id={getFieldId('mapOptions.mapboxKey')} data-name="Map Options Mapbox Key" />
+        <div data-name="Map Options Mapbox Key" />
         <ValidatedField
           name="mapOptions.mapboxKey"
-          component={Fields.Text}
+          component={GeoAPIKey}
           label="MapBox API Key"
           validation={{ required: true }}
           placeholder="Enter your API key..."
@@ -61,7 +61,7 @@ const MapOptions = (props) => {
             )}
       >
         <Row>
-          <div id={getFieldId('dataSource')} data-name="Layer data-source" />
+          <div data-name="Layer data-source" />
           <ValidatedField
             component={GeoDataSource}
             name="mapOptions.dataSource"
@@ -72,7 +72,7 @@ const MapOptions = (props) => {
         {variableOptions && variableOptions.length > 0 && (
           <Row>
             <ValidatedField
-              label="Which property should be used for fill"
+              label="Which property should be used for map selection?"
               name="mapOptions.propToSelect"
               component={Fields.RadioGroup}
               options={variableOptions}
@@ -107,7 +107,7 @@ const MapOptions = (props) => {
     )}
       >
 
-        <div id={getFieldId('mapOptions.center')} data-name="Map Options Initial Center" />
+        <div data-name="Map Options Initial Center" />
         <ValidatedField
           name="mapOptions.center"
           component={Fields.Text}
@@ -116,7 +116,7 @@ const MapOptions = (props) => {
           placeholder="[Longitude, Latitude]"
         />
 
-        <div id={getFieldId('mapOptions.zoom')} data-name="Map Options Zoom" />
+        <div data-name="Map Options Zoom" />
         <ValidatedField
           name="mapOptions.zoom"
           component={Fields.Number}

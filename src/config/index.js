@@ -31,4 +31,5 @@ export const SUPPORTED_EXTENSION_TYPE_MAP = {
   audio: ['.mp3', '.aiff', '.m4a'],
   video: ['.mov', '.mp4'],
   geospatial: ['.geojson'],
+  environment: ['.txt'],
 };
