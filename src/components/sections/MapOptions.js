@@ -8,7 +8,6 @@ import ValidatedField from '../Form/ValidatedField';
 import { getFieldId } from '../../utils/issues';
 
 import ColorPicker from '../Form/Fields/ColorPicker';
-import getPalette from '../TypeEditor/getPalette';
 import GeoDataSource from '../Form/Fields/GeoDataSource';
 import useVariablesFromExternalData from '../../hooks/useVariablesFromExternalData';
 
@@ -27,9 +26,10 @@ import useVariablesFromExternalData from '../../hooks/useVariablesFromExternalDa
 
 const MapOptions = (props) => {
   const { mapOptions } = props;
-  // const { name: paletteName, size: paletteSize } = getPalette(mapOptions.entity);
 
   const { variables: variableOptions } = useVariablesFromExternalData(mapOptions?.dataSource, true, 'geojson');
+
+  const { paletteName, paletteSize } = { paletteName: ['ord-color-seq'], paletteSize: 8 }; // TODO: what palette should this be?
 
   return (
     <>
@@ -83,7 +83,6 @@ const MapOptions = (props) => {
       </Section>
       <Section
         title="Color"
-        id={getFieldId('color')}
         summary={(
           <p>
             Choose a color for the shape outlines and fill.
@@ -92,10 +91,10 @@ const MapOptions = (props) => {
       >
         <ValidatedField
           component={ColorPicker}
-          name="color"
-          // palette={paletteName}
-          // paletteRange={paletteSize}
-          validation={{ required: false }}
+          name="mapOptions.color"
+          palette={paletteName}
+          paletteRange={paletteSize}
+          validation={{ required: true }}
         />
       </Section>
       <Section
