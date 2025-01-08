@@ -1,16 +1,18 @@
 import PromptText from '@components/sections/PromptText';
 import React from 'react';
+import { compose } from 'recompose';
 
-import { getFieldId } from '@app/utils/issues';
 import { ValidatedField } from '@components/Form';
 import { Section, Row } from '@components/EditorLayout';
 import NewVariableWindow, {
   useNewVariableWindowState,
 } from '@components/NewVariableWindow';
+import withVariableHandlers from '@components/sections/CategoricalBinPrompts/withVariableHandlers'; // TODO: should these be moved somewhere more general?
+import withVariableOptions from '@components/sections/CategoricalBinPrompts/withVariableOptions';
 import VariablePicker from '../../Form/Fields/VariablePicker/VariablePicker';
 
 const PromptFields = ({
-  variable, entity, type, changeForm, form,
+  variable, variableOptions, entity, type, changeForm, form,
 }) => {
   const newVariableWindowInitialProps = {
     entity,
@@ -27,19 +29,24 @@ const PromptFields = ({
   const handleNewVariable = (name) => {
     openNewVariableWindow(
       { initialValues: { name, type: 'text' } },
-      { field: 'edgeVariable' },
+      { field: 'alterVariable' },
     );
   };
+
+  const geoVariableOptions = variableOptions
+    .filter(({ type: variableType }) => variableType === 'text');
+
   return (
     <>
       <PromptText />
-      <Section title="Selection Variable" id={getFieldId('variable')}>
+      <Section title="Selection Variable">
         <Row>
           <ValidatedField
             name="variable"
             component={VariablePicker}
             type={type}
             entity={entity}
+            options={geoVariableOptions}
             onCreateOption={handleNewVariable}
             validation={{ required: true }}
             variable={variable}
@@ -54,4 +61,7 @@ const PromptFields = ({
   );
 };
 
-export default PromptFields;
+export default compose(
+  withVariableOptions,
+  withVariableHandlers,
+)(PromptFields);

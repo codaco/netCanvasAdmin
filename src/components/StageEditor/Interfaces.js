@@ -195,7 +195,7 @@ const Geospatial = {
   sections: [
     NodeType,
     MapOptions,
-    // GeospatialPrompts,
+    GeospatialPrompts,
   ],
   documentation: 'https://documentation.networkcanvas.com/interface-documentation/tie-strength-census/', // TODO
 };
