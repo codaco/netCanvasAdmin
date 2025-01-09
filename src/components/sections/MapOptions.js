@@ -9,22 +9,9 @@ import { Section, Row } from '../EditorLayout';
 import ValidatedField from '../Form/ValidatedField';
 
 import ColorPicker from '../Form/Fields/ColorPicker';
-import GeoDataSource from '../Form/Fields/GeoDataSource';
-import GeoAPIKey from '../Form/Fields/GeoAPIKey';
+import GeoDataSource from '../Form/Fields/Geospatial/GeoDataSource';
+import GeoAPIKey from '../Form/Fields/Geospatial/GeoAPIKey';
 import useVariablesFromExternalData from '../../hooks/useVariablesFromExternalData';
-
-// config map options
-
-/*
-      mapOptions: {
-        center: z.tuple([z.number(), z.number()]),
-        token: z.string(),
-        initialZoom: z.number().int(),
-        data: z.string(),
-        color: z.string(),
-        propToSelect: z.string(),
-      },
-*/
 
 const MapOptions = (props) => {
   const { mapOptions } = props;
@@ -48,16 +35,15 @@ const MapOptions = (props) => {
         <ValidatedField
           name="mapOptions.mapboxKey"
           component={GeoAPIKey}
-          label="MapBox API Key"
+          label="Mapbox API Key"
           validation={{ required: true }}
-          placeholder="Enter your API key..."
         />
       </Section>
       <Section
         title="Data source for map layers"
         summary={(
           <p>
-            This stage needs a GeoJSON source for map layers.
+            This interface requires a GeoJSON source for map layers.
             These provide selectable areas for prompts. Select a GeoJSON
             file to use.
           </p>

@@ -32,7 +32,7 @@ const importAsset = (filename) => ({
  * @param {string} filename - Name of file
  * @param {string} fileType - File MIME type
  */
-const importAssetComplete = (filename, name, assetType) => ({
+export const importAssetComplete = (filename, name, assetType) => ({
   id: uuid(),
   type: IMPORT_ASSET_COMPLETE,
   name,

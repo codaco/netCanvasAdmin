@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { withState } from 'recompose';
 import { fieldPropTypes } from 'redux-form';
 import NetworkThumbnail from '@components/Thumbnail/Network'; // TODO: replace
-import File from './File';
+import File from '../File';
 
 const withSelectGeoAsset = withState('selectGeoAsset', 'setSelectGeoAsset', false);
 
