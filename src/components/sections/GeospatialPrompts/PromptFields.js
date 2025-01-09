@@ -1,6 +1,7 @@
 import PromptText from '@components/sections/PromptText';
 import React from 'react';
 import { compose } from 'recompose';
+import PropTypes from 'prop-types';
 
 import { ValidatedField } from '@components/Form';
 import { Section, Row } from '@components/EditorLayout';
@@ -59,6 +60,23 @@ const PromptFields = ({
       />
     </>
   );
+};
+PromptFields.propTypes = {
+  variableOptions: PropTypes.arrayOf(PropTypes.shape({
+    type: PropTypes.string.isRequired,
+  })).isRequired,
+  variable: PropTypes.string,
+  entity: PropTypes.string,
+  type: PropTypes.string,
+  changeForm: PropTypes.func,
+  form: PropTypes.string.isRequired,
+};
+
+PromptFields.defaultProps = {
+  variable: '',
+  entity: '',
+  type: '',
+  changeForm: () => {},
 };
 
 export default compose(

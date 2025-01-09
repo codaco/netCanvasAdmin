@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { compose } from 'recompose';
 
 import * as Fields from '@codaco/ui/lib/components/Fields';
@@ -130,6 +131,27 @@ const MapOptions = (props) => {
     </>
 
   );
+};
+MapOptions.defaultProps = {
+  mapOptions: {
+    center: [0, 0],
+    token: '',
+    initialZoom: 0,
+    dataSource: '',
+    color: '',
+    propToSelect: '',
+  },
+};
+
+MapOptions.propTypes = {
+  mapOptions: PropTypes.shape({
+    center: PropTypes.arrayOf(PropTypes.number),
+    token: PropTypes.string,
+    initialZoom: PropTypes.number,
+    dataSource: PropTypes.string,
+    color: PropTypes.string,
+    propToSelect: PropTypes.string,
+  }),
 };
 
 export default compose(
