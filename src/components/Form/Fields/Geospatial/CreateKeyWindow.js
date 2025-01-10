@@ -13,9 +13,9 @@ import ValidatedField from '@components/Form/ValidatedField';
 import { reduxForm } from 'redux-form';
 import withAssetActions from '@components/AssetBrowser/withAssetActions';
 import { compose } from 'recompose';
-import fs from 'fs'; // Node.js file system module
-import path from 'path'; // Node.js path module
-import { remote } from 'electron'; // Electron's remote module (if needed for paths)
+import fs from 'fs';
+import path from 'path';
+import { remote } from 'electron';
 
 const CreateKeyWindow = ({
   show,
@@ -23,6 +23,7 @@ const CreateKeyWindow = ({
   submitting,
   handleSubmit,
   importAsset,
+  existingFile,
 }) => {
   const handleCreateFile = (values) => {
     // TODO: implement editing the file
@@ -32,8 +33,7 @@ const CreateKeyWindow = ({
 
     fs.writeFile(tempFilePath, fileContents, (err) => {
       if (err) {
-        console.error('Error writing the file:', err);
-        return;
+        throw new Error(`Error writing file: ${err}`);
       }
       importAsset(tempFilePath);
 

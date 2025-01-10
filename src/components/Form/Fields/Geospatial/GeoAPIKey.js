@@ -43,6 +43,7 @@ const GeoAPIKey = (props) => {
       <CreateKeyWindow
         show={showCreateKeyWindow}
         close={() => setShowCreateKeyWindow(false)}
+        existingFile={existingAPIKeyFile}
       />
     </>
   );
