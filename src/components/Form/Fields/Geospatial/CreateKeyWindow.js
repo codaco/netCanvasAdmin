@@ -17,16 +17,17 @@ import path from 'path';
 import { remote } from 'electron';
 import { getAssetPath } from '@selectors/assets';
 import { useSelector } from 'react-redux';
+import { isDirty } from 'redux-form';
 import BasicForm from '../../../BasicForm';
 
 const CreateKeyWindow = ({
   show,
   close,
-  submitting,
   importAsset,
   deleteAsset,
   existingFile,
 }) => {
+  const formName = 'create-mapbox-key';
   const currentState = useSelector((state) => state);
 
   const existingFileData = useMemo(() => {
@@ -71,11 +72,14 @@ const CreateKeyWindow = ({
       type="submit"
       iconPosition="right"
       icon="arrow-right"
-      disabled={submitting} // TODO: disable if no edits
     >
       Finished Editing
     </Button>
   );
+
+  const controlButtons = isDirty(formName)(currentState)
+    ? [cancelButton, saveButton]
+    : [cancelButton];
 
   if (!show) { return null; }
 
@@ -90,7 +94,7 @@ const CreateKeyWindow = ({
           className="screens-container"
         >
           <BasicForm
-            form="create-mapbox-key"
+            form={formName}
             onSubmit={handleCreateFile}
             initialValues={{ mapboxAPIKey: existingFileData.existingKey }}
           >
@@ -104,7 +108,7 @@ const CreateKeyWindow = ({
             )}
               footer={(
                 <ControlBar
-                  buttons={[cancelButton, saveButton]}
+                  buttons={controlButtons}
                 />
             )}
             >
