@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { AnimatePresence, motion } from 'framer-motion';
 import * as Fields from '@codaco/ui/lib/components/Fields';
@@ -10,36 +10,50 @@ import ControlBar from '@components/ControlBar';
 import Screen from '@components/Screen/Screen';
 import { screenVariants } from '@components/Screens/Screens';
 import ValidatedField from '@components/Form/ValidatedField';
-import { reduxForm } from 'redux-form';
 import withAssetActions from '@components/AssetBrowser/withAssetActions';
 import { compose } from 'recompose';
 import fs from 'fs';
 import path from 'path';
 import { remote } from 'electron';
+import { getAssetPath } from '@selectors/assets';
+import { useSelector } from 'react-redux';
+import BasicForm from '../../../BasicForm';
 
 const CreateKeyWindow = ({
   show,
   close,
   submitting,
-  handleSubmit,
   importAsset,
+  deleteAsset,
   existingFile,
 }) => {
-  const handleCreateFile = (values) => {
-    // TODO: implement editing the file
-    const fileContents = values.mapboxAPIKey;
+  const currentState = useSelector((state) => state);
 
+  const existingFileData = useMemo(() => {
+    if (existingFile) {
+      const assetPath = getAssetPath(currentState, existingFile.id);
+      const key = fs.readFileSync(assetPath, 'utf8');
+      return { existingKey: key, existingAssetPath: assetPath };
+    }
+    return { existingKey: '', existingAssetPath: '' };
+  }, [existingFile, currentState]);
+
+  const handleCreateFile = useCallback((formValues) => {
+    const newFileContents = formValues.mapboxAPIKey;
     const tempFilePath = path.join(remote.app.getPath('temp'), 'architect', 'mapbox.txt');
-
-    fs.writeFile(tempFilePath, fileContents, (err) => {
+    fs.writeFile(tempFilePath, newFileContents, (err) => {
       if (err) {
         throw new Error(`Error writing file: ${err}`);
       }
       importAsset(tempFilePath);
 
+      if (existingFileData) {
+        deleteAsset(existingFile.id);
+      }
+
       close();
     });
-  };
+  }, [importAsset, close, existingFileData.existingAssetPath, existingFile, currentState]);
 
   const cancelButton = (
     <Button
@@ -54,10 +68,10 @@ const CreateKeyWindow = ({
   const saveButton = (
     <Button
       key="save"
-      onClick={handleSubmit(handleCreateFile)}
+      type="submit"
       iconPosition="right"
       icon="arrow-right"
-      disabled={submitting}
+      disabled={submitting} // TODO: disable if no edits
     >
       Finished Editing
     </Button>
@@ -75,46 +89,52 @@ const CreateKeyWindow = ({
           exit="hidden"
           className="screens-container"
         >
-          <Screen
-            header={(
-              <div className="stage-heading stage-heading--collapsed stage-heading--shadow">
-                <Layout>
-                  <h2>Create Mapbox API Key</h2>
-                </Layout>
-              </div>
-            )}
-            footer={(
-              <ControlBar
-                buttons={[cancelButton, saveButton]}
-              />
-            )}
+          <BasicForm
+            form="create-mapbox-key"
+            onSubmit={handleCreateFile}
+            initialValues={{ mapboxAPIKey: existingFileData.existingKey }}
           >
-            <Layout>
-              <Section
-                title="API Key"
-                summary={(
-                  <p>
-                    This interface requires a Mapbox API Key to render maps. To get one, visit
-                    {' '}
-                    <a href="https://mapbox.com" target="_blank" rel="noopener noreferrer">mapbox.com</a>
-                    {' '}
-                    or read our documentation on the interface.
-                  </p>
-    )}
-              >
-
-                <div data-name="Mapbox API Key" />
-                <ValidatedField
-                  component={Fields.Text}
-                  label="API Key"
-                  type="text"
-                  placeholder="Enter a Mapbox token..."
-                  name="mapboxAPIKey"
-                  validation={{ required: true }}
+            <Screen
+              header={(
+                <div className="stage-heading stage-heading--collapsed stage-heading--shadow">
+                  <Layout>
+                    <h2>Create Mapbox API Key</h2>
+                  </Layout>
+                </div>
+            )}
+              footer={(
+                <ControlBar
+                  buttons={[cancelButton, saveButton]}
                 />
-              </Section>
-            </Layout>
-          </Screen>
+            )}
+            >
+              <Layout>
+                <Section
+                  title="API Key"
+                  summary={(
+                    <p>
+                      This interface requires a Mapbox API Key to render maps. To get one, visit
+                      {' '}
+                      <a href="https://mapbox.com" target="_blank" rel="noopener noreferrer">mapbox.com</a>
+                      {' '}
+                      or read our documentation on the interface.
+                    </p>
+                )}
+                >
+
+                  <div data-name="Mapbox API Key" />
+                  <ValidatedField
+                    component={Fields.Text}
+                    label="API Key"
+                    type="text"
+                    placeholder="Enter a Mapbox token..."
+                    name="mapboxAPIKey"
+                  />
+                </Section>
+              </Layout>
+            </Screen>
+          </BasicForm>
+
         </motion.div>
       )}
     </AnimatePresence>,
@@ -140,7 +160,4 @@ CreateKeyWindow.defaultProps = {
 
 export default compose(
   withAssetActions,
-  reduxForm({
-    form: 'createApiKeyForm',
-  }),
 )(CreateKeyWindow);
