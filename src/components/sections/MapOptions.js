@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { compose } from 'recompose';
 
 import * as Fields from '@codaco/ui/lib/components/Fields';
+import NativeSelect from '@components/Form/Fields/NativeSelect';
+
 import withMapFormToProps from '@components/enhancers/withMapFormToProps';
 import Tip from '@components/Tip';
 import { Section, Row } from '../EditorLayout';
@@ -16,7 +18,7 @@ import useVariablesFromExternalData from '../../hooks/useVariablesFromExternalDa
 const MapOptions = (props) => {
   const { mapOptions } = props;
 
-  const { variables: variableOptions } = useVariablesFromExternalData(mapOptions?.dataSource, true, 'geojson');
+  const { variables: variableOptions } = useVariablesFromExternalData(mapOptions?.dataSourceAssetId, true, 'geojson');
 
   const { paletteName, paletteSize } = { paletteName: ['ord-color-seq'], paletteSize: 8 }; // TODO: what palette should this be?
 
@@ -53,8 +55,8 @@ const MapOptions = (props) => {
           <div data-name="Layer data-source" />
           <ValidatedField
             component={GeoDataSource}
-            name="mapOptions.dataSource"
-            id="dataSource"
+            name="mapOptions.dataSourceAssetId"
+            id="dataSourceAssetId"
             validation={{ required: true }}
           />
         </Row>
@@ -62,8 +64,8 @@ const MapOptions = (props) => {
           <Row>
             <ValidatedField
               label="Which property should be used for map selection?"
-              name="mapOptions.propToSelect"
-              component={Fields.RadioGroup}
+              name="mapOptions.targetFeatureProperty"
+              component={NativeSelect}
               options={variableOptions}
               validation={{ required: true }}
             />
@@ -84,7 +86,7 @@ const MapOptions = (props) => {
           palette={paletteName}
           paletteRange={paletteSize}
           validation={{ required: true }}
-          label="Which color would you like to use for this stage's map?"
+          label="Which color would you like to use for this stage's map outlines and selections?"
         />
       </Section>
       <Section
@@ -142,9 +144,9 @@ MapOptions.defaultProps = {
     center: [0, 0],
     token: '',
     initialZoom: 0,
-    dataSource: '',
+    dataSourceAssetId: '',
     color: '',
-    propToSelect: '',
+    targetFeatureProperty: '',
   },
 };
 
@@ -153,9 +155,9 @@ MapOptions.propTypes = {
     center: PropTypes.arrayOf(PropTypes.number),
     token: PropTypes.string,
     initialZoom: PropTypes.number,
-    dataSource: PropTypes.string,
+    dataSourceAssetId: PropTypes.string,
     color: PropTypes.string,
-    propToSelect: PropTypes.string,
+    targetFeatureProperty: PropTypes.string,
   }),
 };
 
