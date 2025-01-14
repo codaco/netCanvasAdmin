@@ -1,49 +1,37 @@
-import React, { useEffect, useState } from 'react';
-import { withState, compose } from 'recompose';
+import React, { useState } from 'react';
+import { compose } from 'recompose';
 import { fieldPropTypes } from 'redux-form';
 import Button from '@codaco/ui/lib/components/Button';
-import withAssets from '@components/AssetBrowser/withAssets';
-import KeyIcon from '@material-ui/icons/VpnKey';
 import CreateKeyWindow from './CreateKeyWindow';
-
-const withSelectAPIKey = withState('selectAPIKey', 'setSelectAPIKey', false);
 
 const GeoAPIKey = (props) => {
   const {
-    input,
-    assets,
-
+    input: {
+      value,
+      onChange,
+    },
   } = props;
-  const existingAPIKeyFile = assets.find((asset) => asset.name === 'mapbox.txt');
 
   const [showCreateKeyWindow, setShowCreateKeyWindow] = useState(false);
-
-  // initialize the data with the existing file if there's no input.value
-  useEffect(() => {
-    if (!input.value && existingAPIKeyFile) {
-      input.onChange(existingAPIKeyFile.id);
-    }
-  }, [input.value, existingAPIKeyFile]);
-
   return (
     <>
-      {existingAPIKeyFile && (
-        <p>
-          <KeyIcon />
-          Using existing Mapbox API Key
-        </p>
-      )}
+      <div className="form-fields-file__preview">
+        {/* TODO: file preview here */}
+
+      </div>
       <Button
         onClick={() => setShowCreateKeyWindow(true)}
         color="primary"
         size="small"
       >
-        { !existingAPIKeyFile ? 'Create API Key' : 'Update API Key' }
+        { !value ? 'Select API Key' : 'Update API Key' }
       </Button>
       <CreateKeyWindow
         show={showCreateKeyWindow}
         close={() => setShowCreateKeyWindow(false)}
-        existingFile={existingAPIKeyFile}
+        onSelect={(keyId) => {
+          onChange(keyId); // add the keyId as the value for mapOptions.tokenAssetId
+        }}
       />
     </>
   );
@@ -53,7 +41,4 @@ GeoAPIKey.propTypes = {
   ...fieldPropTypes,
 };
 
-export default compose(
-  withSelectAPIKey,
-  withAssets,
-)(GeoAPIKey);
+export default GeoAPIKey;

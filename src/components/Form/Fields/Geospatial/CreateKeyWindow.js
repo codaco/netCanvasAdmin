@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { AnimatePresence, motion } from 'framer-motion';
 import * as Fields from '@codaco/ui/lib/components/Fields';
@@ -10,56 +10,35 @@ import ControlBar from '@components/ControlBar';
 import Screen from '@components/Screen/Screen';
 import { screenVariants } from '@components/Screens/Screens';
 import ValidatedField from '@components/Form/ValidatedField';
-import withAssetActions from '@components/AssetBrowser/withAssetActions';
-import { compose } from 'recompose';
-import fs from 'fs';
-import path from 'path';
-import { remote } from 'electron';
-import { getAssetPath } from '@selectors/assets';
-import { useSelector } from 'react-redux';
+import Assets from '@components/AssetBrowser/Assets';
+
+import { useSelector, useDispatch } from 'react-redux';
 import { isDirty } from 'redux-form';
 import BasicForm from '../../../BasicForm';
+import { addApiKeyAsset } from '../../../../ducks/modules/protocol/assetManifest';
 
 const CreateKeyWindow = ({
   show,
   close,
-  importAsset,
-  deleteAsset,
-  existingFile,
+  onSelect,
+  selected,
 }) => {
-  const formName = 'create-mapbox-key';
+  const formName = 'create-api-key';
   const currentState = useSelector((state) => state);
+  const dispatch = useDispatch();
 
-  const existingFileData = useMemo(() => {
-    if (existingFile) {
-      const assetPath = getAssetPath(currentState, existingFile.id);
-      const key = fs.readFileSync(assetPath, 'utf8');
-      return { existingKey: key, existingAssetPath: assetPath };
-    }
-    return { existingKey: '', existingAssetPath: '' };
-  }, [existingFile, currentState]);
-
-  const handleCreateFile = useCallback((formValues) => {
-    const newFileContents = formValues.mapboxAPIKey;
-    const tempFilePath = path.join(remote.app.getPath('temp'), 'architect', 'mapbox.txt');
-    fs.writeFile(tempFilePath, newFileContents, (err) => {
-      if (err) {
-        throw new Error(`Error writing file: ${err}`);
-      }
-      importAsset(tempFilePath);
-
-      if (existingFileData) {
-        deleteAsset(existingFile.id);
-      }
-
-      close();
-    });
-  }, [importAsset, close, existingFileData.existingAssetPath, existingFile, currentState]);
+  // handleSubmit should add the selected key to the asset manifest
+  // and close the window
+  const handleSubmit = useCallback((formValues) => {
+    const newKeyAsset = dispatch(addApiKeyAsset(formValues.keyName, formValues.keyValue));
+    onSelect(newKeyAsset.id);
+    close();
+  }, [close]);
 
   const cancelButton = (
     <Button
       color="platinum"
-      onClick={close} // TODO: implement with closing dialog
+      onClick={close}
       key="cancel"
     >
       Cancel
@@ -95,14 +74,13 @@ const CreateKeyWindow = ({
         >
           <BasicForm
             form={formName}
-            onSubmit={handleCreateFile}
-            initialValues={{ mapboxAPIKey: existingFileData.existingKey }}
+            onSubmit={handleSubmit}
           >
             <Screen
               header={(
                 <div className="stage-heading stage-heading--collapsed stage-heading--shadow">
                   <Layout>
-                    <h2>Create Mapbox API Key</h2>
+                    <h2>API Key Browser</h2>
                   </Layout>
                 </div>
             )}
@@ -114,25 +92,34 @@ const CreateKeyWindow = ({
             >
               <Layout>
                 <Section
-                  title="API Key"
-                  summary={(
-                    <p>
-                      This interface requires a Mapbox API Key to render maps. To get one, visit
-                      {' '}
-                      <a href="https://mapbox.com" target="_blank" rel="noopener noreferrer">mapbox.com</a>
-                      {' '}
-                      or read our documentation on the interface.
-                    </p>
-                )}
+                  title="Create New API Key"
                 >
 
-                  <div data-name="Mapbox API Key" />
+                  <div data-name="API Key Name" />
+                  <ValidatedField
+                    component={Fields.Text}
+                    label="API Key Name"
+                    type="text"
+                    placeholder="Name this key"
+                    name="keyName"
+                  />
+                  <div data-name="API Key Value" />
                   <ValidatedField
                     component={Fields.Text}
                     label="API Key"
                     type="text"
-                    placeholder="Enter a Mapbox token..."
-                    name="mapboxAPIKey"
+                    placeholder="Enter an API Key..."
+                    name="keyValue"
+                  />
+                </Section>
+                <Section
+                  title="Resource Library"
+                >
+                  <Assets
+                    onSelect={onSelect}
+                    selected={selected}
+                    type="apiKey"
+                    disableDelete
                   />
                 </Section>
               </Layout>
@@ -162,6 +149,4 @@ CreateKeyWindow.defaultProps = {
   onCancel: () => {},
 };
 
-export default compose(
-  withAssetActions,
-)(CreateKeyWindow);
+export default CreateKeyWindow;

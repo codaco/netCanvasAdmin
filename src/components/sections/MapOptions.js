@@ -35,7 +35,7 @@ const MapOptions = (props) => {
       >
         <div data-name="Map Options Mapbox Key" />
         <ValidatedField
-          name="mapOptions.mapboxKey"
+          name="mapOptions.tokenAssetId"
           component={GeoAPIKey}
           label="Mapbox API Key"
           validation={{ required: true }}
