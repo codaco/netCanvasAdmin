@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { fieldPropTypes } from 'redux-form';
 import Button from '@codaco/ui/lib/components/Button';
-import CreateKeyWindow from './CreateKeyWindow';
+import APIKeyThumbnail from '@components/Thumbnail/APIKey';
+import cx from 'classnames';
+import APIKeyBrowser from './APIKeyBrowser';
 
 const GeoAPIKey = (props) => {
   const {
@@ -11,23 +13,33 @@ const GeoAPIKey = (props) => {
     },
   } = props;
 
-  const [showCreateKeyWindow, setShowCreateKeyWindow] = useState(false);
+  const [showAPIKeyBrowser, setShowAPIKeyBrowser] = useState(false);
+  const fieldClasses = cx(
+    'form-fields-file',
+    {
+      'form-fields-file--replace': !!value,
+    },
+  );
   return (
     <>
-      <div className="form-fields-file__preview">
-        {/* TODO: file preview here */}
+      <div className={fieldClasses}>
+        <div className="form-fields-file__preview">
+          {value && <APIKeyThumbnail id={value} />}
+        </div>
+        <div className="form-fields-file__browse">
 
+          <Button
+            onClick={() => setShowAPIKeyBrowser(true)}
+            color="primary"
+            size="small"
+          >
+            { !value ? 'Select API Key' : 'Update API Key' }
+          </Button>
+        </div>
       </div>
-      <Button
-        onClick={() => setShowCreateKeyWindow(true)}
-        color="primary"
-        size="small"
-      >
-        { !value ? 'Select API Key' : 'Update API Key' }
-      </Button>
-      <CreateKeyWindow
-        show={showCreateKeyWindow}
-        close={() => setShowCreateKeyWindow(false)}
+      <APIKeyBrowser
+        show={showAPIKeyBrowser}
+        close={() => setShowAPIKeyBrowser(false)}
         onSelect={(keyId) => {
           onChange(keyId); // add the keyId as the value for mapOptions.tokenAssetId
         }}

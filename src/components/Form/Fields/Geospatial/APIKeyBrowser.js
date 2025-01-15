@@ -11,13 +11,14 @@ import Screen from '@components/Screen/Screen';
 import { screenVariants } from '@components/Screens/Screens';
 import ValidatedField from '@components/Form/ValidatedField';
 import Assets from '@components/AssetBrowser/Assets';
+import useExternalDataPreview from '@components/AssetBrowser/useExternalDataPreview';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { isDirty } from 'redux-form';
 import BasicForm from '../../../BasicForm';
 import { addApiKeyAsset } from '../../../../ducks/modules/protocol/assetManifest';
 
-const CreateKeyWindow = ({
+const APIKeyBrowser = ({
   show,
   close,
   onSelect,
@@ -26,13 +27,19 @@ const CreateKeyWindow = ({
   const formName = 'create-api-key';
   const currentState = useSelector((state) => state);
   const dispatch = useDispatch();
+  const [preview, handleShowPreview] = useExternalDataPreview();
 
   // handleSubmit should add the selected key to the asset manifest
   // and close the window
+
+  const handleSelectAsset = useCallback((assetId) => {
+    onSelect(assetId);
+    close();
+  }, [onSelect]);
+
   const handleSubmit = useCallback((formValues) => {
     const newKeyAsset = dispatch(addApiKeyAsset(formValues.keyName, formValues.keyValue));
-    onSelect(newKeyAsset.id);
-    close();
+    handleSelectAsset(newKeyAsset.id);
   }, [close]);
 
   const cancelButton = (
@@ -94,7 +101,6 @@ const CreateKeyWindow = ({
                 <Section
                   title="Create New API Key"
                 >
-
                   <div data-name="API Key Name" />
                   <ValidatedField
                     component={Fields.Text}
@@ -116,12 +122,14 @@ const CreateKeyWindow = ({
                   title="Resource Library"
                 >
                   <Assets
-                    onSelect={onSelect}
+                    onSelect={handleSelectAsset}
                     selected={selected}
                     type="apiKey"
                     disableDelete
+                    onPreview={handleShowPreview}
                   />
                 </Section>
+                { preview }
               </Layout>
             </Screen>
           </BasicForm>
@@ -133,7 +141,7 @@ const CreateKeyWindow = ({
   );
 };
 
-CreateKeyWindow.propTypes = {
+APIKeyBrowser.propTypes = {
   show: PropTypes.bool,
   type: PropTypes.string,
   selected: PropTypes.string,
@@ -141,7 +149,7 @@ CreateKeyWindow.propTypes = {
   onCancel: PropTypes.func,
 };
 
-CreateKeyWindow.defaultProps = {
+APIKeyBrowser.defaultProps = {
   show: true,
   type: null,
   selected: null,
@@ -149,4 +157,4 @@ CreateKeyWindow.defaultProps = {
   onCancel: () => {},
 };
 
-export default CreateKeyWindow;
+export default APIKeyBrowser;
