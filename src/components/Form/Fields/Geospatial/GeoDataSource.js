@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withState } from 'recompose';
 import { fieldPropTypes } from 'redux-form';
-import NetworkThumbnail from '@components/Thumbnail/Network'; // TODO: replace
+import GeoJSONThumbnail from '@components/Thumbnail/GeoJSON';
 import File from '../File';
 
 const withSelectGeoAsset = withState('selectGeoAsset', 'setSelectGeoAsset', false);
@@ -18,7 +18,7 @@ const GeoDataSource = (props) => {
         // eslint-disable-next-line react/jsx-props-no-spreading
       {...props}
     >
-      { (id) => <NetworkThumbnail id={id} /> }
+      { (id) => <GeoJSONThumbnail id={id} /> }
     </File>
   );
 };

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { compose } from 'recompose';
 import { fieldPropTypes } from 'redux-form';
 import Button from '@codaco/ui/lib/components/Button';
 import CreateKeyWindow from './CreateKeyWindow';
