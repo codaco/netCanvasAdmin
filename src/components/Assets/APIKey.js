@@ -4,7 +4,7 @@ import withAssetMeta from './withAssetMeta';
 
 const APIKey = ({ meta }) => (
   // eslint-disable-next-line react/jsx-props-no-spreading
-  <p>{meta.value}</p>
+  <h1>{meta.value}</h1>
 );
 
 APIKey.propTypes = {

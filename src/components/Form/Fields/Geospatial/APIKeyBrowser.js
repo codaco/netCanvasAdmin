@@ -13,8 +13,8 @@ import ValidatedField from '@components/Form/ValidatedField';
 import Assets from '@components/AssetBrowser/Assets';
 import useExternalDataPreview from '@components/AssetBrowser/useExternalDataPreview';
 
-import { useSelector, useDispatch } from 'react-redux';
-import { isDirty } from 'redux-form';
+import { useDispatch } from 'react-redux';
+
 import BasicForm from '../../../BasicForm';
 import { addApiKeyAsset } from '../../../../ducks/modules/protocol/assetManifest';
 
@@ -25,12 +25,8 @@ const APIKeyBrowser = ({
   selected,
 }) => {
   const formName = 'create-api-key';
-  const currentState = useSelector((state) => state);
   const dispatch = useDispatch();
   const [preview, handleShowPreview] = useExternalDataPreview();
-
-  // handleSubmit should add the selected key to the asset manifest
-  // and close the window
 
   const handleSelectAsset = useCallback((assetId) => {
     onSelect(assetId);
@@ -38,8 +34,7 @@ const APIKeyBrowser = ({
   }, [onSelect]);
 
   const handleSubmit = useCallback((formValues) => {
-    const newKeyAsset = dispatch(addApiKeyAsset(formValues.keyName, formValues.keyValue));
-    handleSelectAsset(newKeyAsset.id);
+    dispatch(addApiKeyAsset(formValues.keyName, formValues.keyValue));
   }, [close]);
 
   const cancelButton = (
@@ -51,21 +46,6 @@ const APIKeyBrowser = ({
       Cancel
     </Button>
   );
-
-  const saveButton = (
-    <Button
-      key="save"
-      type="submit"
-      iconPosition="right"
-      icon="arrow-right"
-    >
-      Finished Editing
-    </Button>
-  );
-
-  const controlButtons = isDirty(formName)(currentState)
-    ? [cancelButton, saveButton]
-    : [cancelButton];
 
   if (!show) { return null; }
 
@@ -93,7 +73,7 @@ const APIKeyBrowser = ({
             )}
               footer={(
                 <ControlBar
-                  buttons={controlButtons}
+                  buttons={[cancelButton]}
                 />
             )}
             >
@@ -108,6 +88,7 @@ const APIKeyBrowser = ({
                     type="text"
                     placeholder="Name this key"
                     name="keyName"
+                    validation={{ required: true }}
                   />
                   <div data-name="API Key Value" />
                   <ValidatedField
@@ -116,7 +97,18 @@ const APIKeyBrowser = ({
                     type="text"
                     placeholder="Enter an API Key..."
                     name="keyValue"
+                    validation={{ required: true }}
                   />
+                  <Button
+                    key="save"
+                    type="submit"
+                    iconPosition="right"
+                    icon="arrow-right"
+                    size="small"
+                  >
+                    Create Key
+                  </Button>
+
                 </Section>
                 <Section
                   title="Resource Library"

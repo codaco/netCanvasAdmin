@@ -43,6 +43,7 @@ const GeoAPIKey = (props) => {
         onSelect={(keyId) => {
           onChange(keyId); // add the keyId as the value for mapOptions.tokenAssetId
         }}
+        selected={value}
       />
     </>
   );
