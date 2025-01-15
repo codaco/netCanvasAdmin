@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import { compose } from 'recompose';
 import withDisabledAPIKeyRequired from '@components/enhancers/withDisabledAPIKeyRequired';
 import mapboxgl from 'mapbox-gl';
-import { useSelector, useDispatch } from 'react-redux';
-import { change } from 'redux-form';
+import { useSelector } from 'react-redux';
 import { get } from 'lodash';
 import { getAssetManifest } from '@selectors/protocol';
 import { Section } from '../EditorLayout';
@@ -14,12 +13,10 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 const MapSelection = ({
   mapOptions,
   disabled,
-  form,
 }) => {
   const { tokenAssetId } = mapOptions;
   const assetManifest = useSelector(getAssetManifest);
   const mapboxAPIKey = get(assetManifest, [tokenAssetId, 'value'], '');
-  const dispatch = useDispatch();
 
   const mapRef = useRef(null);
   const mapContainerRef = useRef(null);
