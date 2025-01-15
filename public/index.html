@@ -6,7 +6,7 @@
       http-equiv="Content-Security-Policy"
       content="
       default-src 'self';
-      connect-src 'self' https://api.github.com:* http://localhost:* https://localhost:* https://documentation.networkcanvas.com:* https://assets.networkcanvas.com:* %REACT_APP_CONNECT_SRC_CSP%;
+      connect-src 'self' https://api.github.com:* http://localhost:* https://localhost:* https://documentation.networkcanvas.com:* https://assets.networkcanvas.com:* https://api.mapbox.com:* https://events.mapbox.com:* ws://*:* wss://*:* %REACT_APP_CONNECT_SRC_CSP%;
       script-src 'self' %REACT_APP_SCRIPT_SRC_CSP%;
       style-src 'self' 'unsafe-inline';
       media-src 'self' data: protocol: asset:;

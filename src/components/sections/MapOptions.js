@@ -2,11 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { compose } from 'recompose';
 
-import * as Fields from '@codaco/ui/lib/components/Fields';
 import NativeSelect from '@components/Form/Fields/NativeSelect';
 
 import withMapFormToProps from '@components/enhancers/withMapFormToProps';
-import Tip from '@components/Tip';
 import { Section, Row } from '../EditorLayout';
 import ValidatedField from '../Form/ValidatedField';
 
@@ -89,52 +87,6 @@ const MapOptions = (props) => {
           label="Which color would you like to use for this stage's map outlines and selections?"
         />
       </Section>
-      <Section
-        title="Map Options"
-        summary={(
-          <p>
-            When the map is first loaded, it will be centered at the initial center and zoom level
-            configured here.
-          </p>
-    )}
-      >
-
-        <Tip>
-          <p>
-            The initial center is in longitude, latitude format.
-            We recommend using the longitude and latitude of the center of the area you
-            want to show, such as a city or region.
-          </p>
-        </Tip>
-
-        <div data-name="Map Options Initial Center" />
-        <ValidatedField
-          name="mapOptions.center"
-          component={Fields.Text}
-          label="Initial Center"
-          validation={{ required: false }}
-          placeholder="[Longitude, Latitude]"
-        />
-
-        <Tip>
-          <p>
-            The zoom level controls how much of the map is initially visible. Higher levels show
-            more detail, while lower levels show a broader area. The zoom level can be a number
-            between 0 and 22.
-          </p>
-        </Tip>
-
-        <div data-name="Map Options Zoom" />
-        <ValidatedField
-          name="mapOptions.zoom"
-          component={Fields.Number}
-          label="Initial Map Zoom"
-          type="number"
-          placeholder="Enter a number between 0 and 22..."
-          normalize={(value) => parseInt(value, 10) || value}
-          validation={{ required: false, positiveNumber: true, maxValue: 22 }}
-        />
-      </Section>
     </>
 
   );
@@ -142,7 +94,7 @@ const MapOptions = (props) => {
 MapOptions.defaultProps = {
   mapOptions: {
     center: [0, 0],
-    token: '',
+    tokenAssetId: '',
     initialZoom: 0,
     dataSourceAssetId: '',
     color: '',
@@ -153,7 +105,7 @@ MapOptions.defaultProps = {
 MapOptions.propTypes = {
   mapOptions: PropTypes.shape({
     center: PropTypes.arrayOf(PropTypes.number),
-    token: PropTypes.string,
+    tokenAssetId: PropTypes.string,
     initialZoom: PropTypes.number,
     dataSourceAssetId: PropTypes.string,
     color: PropTypes.string,

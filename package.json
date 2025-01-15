@@ -269,5 +269,8 @@
             "@utils/(.*)$": "<rootDir>/src/utils/$1",
             "^react-native$": "react-native-web"
         }
+    },
+    "dependencies": {
+        "mapbox-gl": "^1.13.0"
     }
 }
