@@ -79,6 +79,10 @@ const MapView = ({ mapOptions, onChange, close }) => {
           zoom,
         });
 
+        mapRef.current.addControl(new mapboxgl.NavigationControl({
+          showCompass: false,
+        }));
+
         mapRef.current.on('move', () => {
           const mapCenter = mapRef.current.getCenter();
           const mapZoom = mapRef.current.getZoom();
