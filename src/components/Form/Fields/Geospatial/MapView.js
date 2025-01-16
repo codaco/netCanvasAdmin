@@ -1,0 +1,164 @@
+import React, { useEffect, useRef, useState } from 'react';
+import PropTypes from 'prop-types';
+import mapboxgl from 'mapbox-gl';
+import { useSelector } from 'react-redux';
+import { Layout, Section } from '@components/EditorLayout';
+import { AnimatePresence, motion } from 'framer-motion';
+import ControlBar from '@components/ControlBar';
+import Screen from '@components/Screen/Screen';
+import Button from '@codaco/ui/lib/components/Button';
+import { screenVariants } from '@components/Screens/Screens';
+import { get } from 'lodash';
+import { getAssetManifest } from '@selectors/protocol';
+import 'mapbox-gl/dist/mapbox-gl.css';
+
+const MapView = ({ mapOptions, onChange, close }) => {
+  const { tokenAssetId } = mapOptions;
+  const assetManifest = useSelector(getAssetManifest);
+  const mapboxAPIKey = get(assetManifest, [tokenAssetId, 'value'], '');
+
+  const mapRef = useRef(null);
+  const mapContainerRef = useRef(null);
+
+  const [center, setCenter] = useState(mapOptions.center || [0, 0]);
+  const [zoom, setZoom] = useState(mapOptions.initialZoom || 0);
+
+  const saveMapSelection = (newCenter, newZoom) => {
+    onChange({
+      ...mapOptions,
+      center: newCenter,
+      initialZoom: newZoom,
+    });
+  };
+
+  const cancelButton = (
+    <Button
+      color="platinum"
+      onClick={() => close()}
+      key="cancel"
+    >
+      Cancel
+    </Button>
+  );
+
+  const saveButton = (
+    <Button
+      color="primary"
+      onClick={() => {
+        saveMapSelection(center, zoom);
+        close();
+      }}
+      key="save"
+      iconPosition="right"
+      icon="arrow-right"
+    >
+      Finished Editing
+    </Button>
+  );
+  useEffect(() => {
+    if (!mapboxAPIKey || !mapContainerRef.current) {
+      console.error('Mapbox API key is missing or container is not available');
+      return;
+    }
+
+    mapboxgl.accessToken = mapboxAPIKey;
+
+    const initializeMap = () => {
+      if (mapContainerRef.current && !mapRef.current) {
+        mapRef.current = new mapboxgl.Map({
+          container: mapContainerRef.current,
+          style: 'mapbox://styles/mapbox/streets-v11',
+          center,
+          zoom,
+        });
+
+        mapRef.current.on('move', () => {
+          const mapCenter = mapRef.current.getCenter();
+          const mapZoom = mapRef.current.getZoom();
+
+          setCenter([mapCenter.lng, mapCenter.lat]);
+          setZoom(mapZoom);
+        });
+      }
+    };
+
+    initializeMap();
+
+    return () => {
+      if (mapRef.current) {
+        mapRef.current.remove();
+        mapRef.current = null;
+      }
+    };
+  }, [mapOptions, mapboxAPIKey]);
+
+  return (
+    <AnimatePresence>
+      <motion.div
+        variants={screenVariants}
+        initial="hidden"
+        animate="visible"
+        exit="hidden"
+        className="screens-container"
+      >
+        <Screen
+          header={(
+            <div className="stage-heading stage-heading--collapsed stage-heading--shadow">
+              <Layout>
+                <h2>Initial Map View</h2>
+              </Layout>
+            </div>
+        )}
+          footer={(
+            <ControlBar
+              buttons={[cancelButton, saveButton]}
+            />
+        )}
+        >
+          <Layout>
+            <Section title="Set Initial Map View">
+              <div>
+                Longitude:
+                {' '}
+                {center[0].toFixed(4)}
+                {' '}
+                | Latitude:
+                {' '}
+                {center[1].toFixed(4)}
+                {' '}
+                | Zoom:
+                {' '}
+                {zoom.toFixed(2)}
+              </div>
+              <div ref={mapContainerRef} style={{ width: '500px', height: '80vh' }} />
+            </Section>
+          </Layout>
+        </Screen>
+      </motion.div>
+    </AnimatePresence>
+  );
+};
+
+MapView.defaultProps = {
+  mapOptions: {
+    center: [0, 0],
+    tokenAssetId: '',
+    initialZoom: 0,
+    dataSourceAssetId: '',
+    color: '',
+    targetFeatureProperty: '',
+  },
+};
+
+MapView.propTypes = {
+  mapOptions: PropTypes.shape({
+    center: PropTypes.arrayOf(PropTypes.number),
+    tokenAssetId: PropTypes.string,
+    initialZoom: PropTypes.number,
+    dataSourceAssetId: PropTypes.string,
+    color: PropTypes.string,
+    targetFeatureProperty: PropTypes.string,
+  }),
+};
+
+export default MapView;

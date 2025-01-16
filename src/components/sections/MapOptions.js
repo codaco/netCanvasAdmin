@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { compose } from 'recompose';
-
+import withDisabledAPIKeyRequired from '@components/enhancers/withDisabledAPIKeyRequired';
 import NativeSelect from '@components/Form/Fields/NativeSelect';
 
 import withMapFormToProps from '@components/enhancers/withMapFormToProps';
@@ -11,10 +11,11 @@ import ValidatedField from '../Form/ValidatedField';
 import ColorPicker from '../Form/Fields/ColorPicker';
 import GeoDataSource from '../Form/Fields/Geospatial/GeoDataSource';
 import GeoAPIKey from '../Form/Fields/Geospatial/GeoAPIKey';
+import MapSelection from '../Form/Fields/Geospatial/MapSelection';
 import useVariablesFromExternalData from '../../hooks/useVariablesFromExternalData';
 
 const MapOptions = (props) => {
-  const { mapOptions } = props;
+  const { mapOptions, disabled } = props;
 
   const { variables: variableOptions } = useVariablesFromExternalData(mapOptions?.dataSourceAssetId, true, 'geojson');
 
@@ -87,6 +88,23 @@ const MapOptions = (props) => {
           label="Which color would you like to use for this stage's map outlines and selections?"
         />
       </Section>
+      <Section
+        title="Initial Map View"
+        summary={(
+          <p>
+            When the map is first loaded, it will be centered at the initial center and zoom level
+            configured here. Resetting the map will return it to this view.
+          </p>
+            )}
+        disabled={disabled}
+      >
+        <ValidatedField
+          name="mapOptions"
+          component={MapSelection}
+          label="Initial Map View"
+          validation={{ required: true }}
+        />
+      </Section>
     </>
 
   );
@@ -111,8 +129,10 @@ MapOptions.propTypes = {
     color: PropTypes.string,
     targetFeatureProperty: PropTypes.string,
   }),
+  disabled: PropTypes.bool.isRequired,
 };
 
 export default compose(
   withMapFormToProps(['mapOptions']),
+  withDisabledAPIKeyRequired,
 )(MapOptions);

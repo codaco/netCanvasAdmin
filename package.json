@@ -271,6 +271,6 @@
         }
     },
     "dependencies": {
-        "mapbox-gl": "^3.9.3"
+        "mapbox-gl": "^1.13.0"
     }
 }

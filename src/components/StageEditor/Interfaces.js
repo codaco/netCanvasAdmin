@@ -28,7 +28,6 @@ import {
   TieStrengthCensusPrompts,
   Title,
   MapOptions,
-  MapSelection,
   GeospatialPrompts,
 } from '@components/sections';
 import { FilteredNodeType } from '@components/sections/NodeType';
@@ -196,7 +195,6 @@ const Geospatial = {
   sections: [
     NodeType,
     MapOptions,
-    MapSelection,
     GeospatialPrompts,
   ],
   documentation: 'https://documentation.networkcanvas.com/interface-documentation/tie-strength-census/', // TODO
