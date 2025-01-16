@@ -27,11 +27,6 @@ const MapSelection = ({
   // test dispatch
 
   useEffect(() => {
-    // Set the worker URL for strict CSP environments
-    // https://docs.mapbox.com/mapbox-gl-js/guides/browsers-and-testing/#strict-csp-environments
-    // note: need the v1 version of the worker
-    mapboxgl.workerUrl = '/mapbox-gl-csp-worker.js';
-
     if (!mapboxAPIKey) {
       return;
     }
@@ -87,7 +82,7 @@ const MapSelection = ({
       </div>
       <div
         ref={mapContainerRef}
-        style={{ width: '1000px', height: '600px' }} // need to set a size for the map to render
+        style={{ width: '100%', height: '80vh' }} // need to set a size for the map to render
       />
     </Section>
   );
