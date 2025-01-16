@@ -4,6 +4,7 @@ import { compose } from 'redux';
 import cx from 'classnames';
 import { Button } from '@codaco/ui';
 import Window from '@components/Window';
+import ContentCopyIcon from '@material-ui/icons/FileCopy';
 import DownloadIcon from '@material-ui/icons/GetApp';
 import withAssetMeta from '@components/Assets/withAssetMeta';
 import withAssetPath from '@components/Assets/withAssetPath';
@@ -43,6 +44,12 @@ const Preview = ({
     onDownload(assetPath, meta);
   }, [onDownload, assetPath, meta]);
 
+  const handleCopyKey = useCallback(() => {
+    if (meta.value) {
+      navigator.clipboard.writeText(meta.value);
+    }
+  }, []);
+
   const primaryButtons = [
     <Button
       onClick={onClose}
@@ -53,13 +60,22 @@ const Preview = ({
     </Button>,
   ];
 
-  const secondaryButtons = [
+  // API keys are copied instead of downloaded
+  const secondaryButtons = meta.type !== 'apiKey' ? [
     <Button
       onClick={handleDownload}
       icon={<DownloadIcon />}
       key="download"
     >
       Download asset
+    </Button>,
+  ] : [
+    <Button
+      onClick={handleCopyKey}
+      icon={<ContentCopyIcon />}
+      key="copy"
+    >
+      Copy API Key
     </Button>,
   ];
 
