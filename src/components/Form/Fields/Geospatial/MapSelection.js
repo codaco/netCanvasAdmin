@@ -20,7 +20,7 @@ const MapSelection = ({
         color="primary"
         size="small"
       >
-        Edit Map View
+        {value.center ? 'Edit Map View' : 'Set Map View'}
       </Button>
 
       {showMap && createPortal(

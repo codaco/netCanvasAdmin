@@ -14,6 +14,7 @@ import GeoAPIKey from '../Form/Fields/Geospatial/GeoAPIKey';
 import MapSelection from '../Form/Fields/Geospatial/MapSelection';
 import useVariablesFromExternalData from '../../hooks/useVariablesFromExternalData';
 
+// TODO: move this to a shared location -- protocol-consts?
 const mapboxStyleOptions = [
   { label: 'Standard', value: 'mapbox://styles/mapbox/standard' },
   { label: 'Standard Satellite', value: 'mapbox://styles/mapbox/standard-satellite' },
@@ -114,8 +115,7 @@ const MapOptions = (props) => {
         title="Initial Map View"
         summary={(
           <p>
-            When the map is first loaded, it will be centered at the initial center and zoom level
-            configured here. Resetting the map will return it to this view.
+            Configure the initial map view to adjust where it will be centered and zoomed to.
           </p>
             )}
         disabled={disabled}

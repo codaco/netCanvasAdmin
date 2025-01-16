@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import withAssetMeta from './withAssetMeta';
 
 const APIKey = ({ meta }) => (
-  <h1>{meta.value}</h1>
+  <h1 style={{ wordWrap: 'break-word' }}>
+    {meta.value}
+  </h1>
 );
 
 APIKey.propTypes = {
