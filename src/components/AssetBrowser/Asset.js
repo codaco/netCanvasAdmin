@@ -17,6 +17,7 @@ const ASSET_COMPONENTS = {
   network: Thumbnails.Network,
   geospatial: Thumbnails.GeoJSON,
   apiKey: Thumbnails.APIKey,
+  geojson: Thumbnails.GeoJSON,
 };
 
 const Asset = ({

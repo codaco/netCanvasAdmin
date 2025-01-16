@@ -21,8 +21,8 @@ const getRenderer = (meta) => {
       return ({ id }) => <Assets.Video id={id} controls />;
     case 'network':
       return Assets.Network;
-    // case 'geospatial':
-    //   return Assets.GeoJSON;
+    case 'geospatial':
+      return Assets.GeoJSON;
     case 'apiKey':
       return Assets.APIKey;
     default:
