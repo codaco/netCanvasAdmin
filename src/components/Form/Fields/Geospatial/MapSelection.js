@@ -20,7 +20,7 @@ const MapSelection = ({
         color="primary"
         size="small"
       >
-        Open Map
+        Edit Map View
       </Button>
 
       {showMap && createPortal(
@@ -43,6 +43,7 @@ MapSelection.propTypes = {
       dataSourceAssetId: PropTypes.string,
       color: PropTypes.string,
       targetFeatureProperty: PropTypes.string,
+      style: PropTypes.string,
     }),
     onChange: PropTypes.func.isRequired,
   }).isRequired,

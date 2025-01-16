@@ -13,7 +13,7 @@ import { getAssetManifest } from '@selectors/protocol';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
 const MapView = ({ mapOptions, onChange, close }) => {
-  const { tokenAssetId } = mapOptions;
+  const { tokenAssetId, style } = mapOptions;
   const assetManifest = useSelector(getAssetManifest);
   const mapboxAPIKey = get(assetManifest, [tokenAssetId, 'value'], '');
 
@@ -52,12 +52,19 @@ const MapView = ({ mapOptions, onChange, close }) => {
       iconPosition="right"
       icon="arrow-right"
     >
-      Finished Editing
+      Save Changes
     </Button>
   );
+
+  const isMapChanged = center !== mapOptions.center || zoom !== mapOptions.initialZoom;
+
+  const controlButtons = [
+    cancelButton,
+    ...(isMapChanged ? [saveButton] : []),
+  ];
+
   useEffect(() => {
     if (!mapboxAPIKey || !mapContainerRef.current) {
-      console.error('Mapbox API key is missing or container is not available');
       return;
     }
 
@@ -67,7 +74,7 @@ const MapView = ({ mapOptions, onChange, close }) => {
       if (mapContainerRef.current && !mapRef.current) {
         mapRef.current = new mapboxgl.Map({
           container: mapContainerRef.current,
-          style: 'mapbox://styles/mapbox/streets-v11',
+          style: style || 'mapbox://styles/mapbox/streets-v12',
           center,
           zoom,
         });
@@ -111,26 +118,22 @@ const MapView = ({ mapOptions, onChange, close }) => {
         )}
           footer={(
             <ControlBar
-              buttons={[cancelButton, saveButton]}
+              buttons={controlButtons}
             />
         )}
         >
           <Layout>
-            <Section title="Set Initial Map View">
-              <div>
-                Longitude:
-                {' '}
-                {center[0].toFixed(4)}
-                {' '}
-                | Latitude:
-                {' '}
-                {center[1].toFixed(4)}
-                {' '}
-                | Zoom:
-                {' '}
-                {zoom.toFixed(2)}
-              </div>
-              <div ref={mapContainerRef} style={{ width: '500px', height: '80vh' }} />
+            <Section
+              title="Set Initial Map View"
+              summary={(
+                <p>
+                  When the map is first loaded, it will be centered at the
+                  initial center and zoom level configured on this map.
+                  Resetting the map will return it to this view.
+                </p>
+          )}
+            >
+              <div ref={mapContainerRef} style={{ width: '100%', height: '50vh' }} />
             </Section>
           </Layout>
         </Screen>
@@ -147,6 +150,7 @@ MapView.defaultProps = {
     dataSourceAssetId: '',
     color: '',
     targetFeatureProperty: '',
+    style: '',
   },
 };
 
@@ -158,7 +162,10 @@ MapView.propTypes = {
     dataSourceAssetId: PropTypes.string,
     color: PropTypes.string,
     targetFeatureProperty: PropTypes.string,
+    style: PropTypes.string,
   }),
+  onChange: PropTypes.func.isRequired,
+  close: PropTypes.func.isRequired,
 };
 
 export default MapView;
