@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
-import mapboxgl from 'mapbox-gl';
+import mapboxgl from 'mapbox-gl/dist/mapbox-gl-unminified';
 import { useSelector } from 'react-redux';
 import { Layout, Section } from '@components/EditorLayout';
 import { AnimatePresence, motion } from 'framer-motion';
