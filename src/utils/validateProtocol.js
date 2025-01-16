@@ -23,6 +23,8 @@ const asyncValidateLogic = async (protocol) => new Promise((resolve, reject) => 
 const validateProtocol = (protocol) => {
   log.debug('validateProtocol()');
 
+  // TODO: REMOVE THIS when we bring over the new schema
+  return Promise.resolve(protocol);
   return Promise.all([
     asyncValidateLogic(protocol),
     asyncValidateSchema(protocol),
