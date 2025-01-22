@@ -122,7 +122,7 @@ export default function reducer(state = initialState, action = {}) {
         ...state,
         [action.id]: {
           id: action.id,
-          type: 'apiKey',
+          type: 'apikey',
           name: action.name,
           value: action.value,
         },

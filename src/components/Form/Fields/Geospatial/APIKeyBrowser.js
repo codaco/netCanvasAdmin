@@ -116,7 +116,7 @@ const APIKeyBrowser = ({
                   <Assets
                     onSelect={handleSelectAsset}
                     selected={selected}
-                    type="apiKey"
+                    type="apikey"
                     disableDelete
                     onPreview={handleShowPreview}
                   />

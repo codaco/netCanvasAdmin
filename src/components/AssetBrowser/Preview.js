@@ -24,7 +24,7 @@ const getRenderer = (meta) => {
       return Assets.Network;
     case 'geospatial':
       return Assets.GeoJSON;
-    case 'apiKey':
+    case 'apikey':
       return Assets.APIKey;
     default:
       return () => <p>No preview available.</p>;
@@ -61,7 +61,7 @@ const Preview = ({
   ];
 
   // API keys are copied instead of downloaded
-  const secondaryButtons = meta.type !== 'apiKey' ? [
+  const secondaryButtons = meta.type !== 'apikey' ? [
     <Button
       onClick={handleDownload}
       icon={<DownloadIcon />}

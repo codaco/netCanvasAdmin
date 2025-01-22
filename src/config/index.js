@@ -20,7 +20,7 @@ export const COLOR_PALETTE_BY_ENTITY = {
 };
 
 // Target protocol schema version. Used to determine compatibility & migration
-export const APP_SCHEMA_VERSION = 7;
+export const APP_SCHEMA_VERSION = 8;
 
 export const SAMPLE_PROTOCOL_URL = 'https://assets.networkcanvas.com/public/protocols/Sample%20Protocol%20v4.netcanvas';
 
@@ -31,5 +31,4 @@ export const SUPPORTED_EXTENSION_TYPE_MAP = {
   audio: ['.mp3', '.aiff', '.m4a'],
   video: ['.mov', '.mp4'],
   geospatial: ['.geojson'],
-  environment: ['.txt'],
 };
