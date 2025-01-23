@@ -13,7 +13,7 @@ const GeoDataSource = (props) => {
   } = props;
   return (
     <File
-      type="geospatial"
+      type="geojson"
       selected={input.value}
         // eslint-disable-next-line react/jsx-props-no-spreading
       {...props}

@@ -30,5 +30,5 @@ export const SUPPORTED_EXTENSION_TYPE_MAP = {
   image: ['.jpg', '.jpeg', '.gif', '.png'],
   audio: ['.mp3', '.aiff', '.m4a'],
   video: ['.mov', '.mp4'],
-  geospatial: ['.geojson'],
+  geojson: ['.geojson'],
 };
