@@ -69,6 +69,8 @@ export const paths = {
     'stages[].panels[].dataSource',
     'stages[].dataSource',
     'stages[].background.image',
+    'stages[].mapOptions.tokenAssetId',
+    'stages[].mapOptions.dataSourceAssetId',
     ['stages[].items[]', mapAssetItems],
   ],
 };

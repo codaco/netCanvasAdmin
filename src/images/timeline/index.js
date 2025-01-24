@@ -11,6 +11,7 @@ import Information from './stage--Information.png';
 import AlterForm from './stage--AlterForm.png';
 import AlterEdgeForm from './stage--AlterEdgeForm.png';
 import EgoForm from './stage--EgoForm.png';
+import Geospatial from './stage--Geospatial.png';
 import Default from './stage--Default.png';
 
 export default {
@@ -27,5 +28,6 @@ export default {
   AlterForm,
   AlterEdgeForm,
   EgoForm,
+  Geospatial,
   Default,
 };

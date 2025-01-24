@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { makeGetNetworkAssetVariables } from '@selectors/assets';
+import { makeGetNetworkAssetVariables, makeGetGeoJsonAssetVariables } from '@selectors/assets';
 
 const initialState = {
   isVariablesLoading: false,
@@ -8,17 +8,20 @@ const initialState = {
   variablesError: null,
 };
 
-const useVariablesFromExternalData = (dataSource, asOptions = false) => {
+const useVariablesFromExternalData = (dataSource, asOptions = false, type = 'network') => {
   const [state, setState] = useState(initialState);
 
   const getNetworkAssetVariables = useSelector(makeGetNetworkAssetVariables);
+  const getGeojsonAssetVariables = useSelector(makeGetGeoJsonAssetVariables);
 
   useEffect(() => {
     if (!dataSource) { return; }
 
-    setState({ isVariableLoading: true, variables: [], variablesError: null });
+    setState({ isVariablesLoading: true, variables: [], variablesError: null });
 
-    getNetworkAssetVariables(dataSource, asOptions)
+    const getVariables = type === 'geojson' ? getGeojsonAssetVariables : getNetworkAssetVariables;
+
+    getVariables(dataSource, asOptions)
       .then((variables) => {
         setState((s) => ({ ...s, isVariablesLoading: false, variables }));
       })
@@ -29,7 +32,7 @@ const useVariablesFromExternalData = (dataSource, asOptions = false) => {
           variablesError: e.toString(),
         }));
       });
-  }, [dataSource]);
+  }, [dataSource, type]);
 
   return state;
 };

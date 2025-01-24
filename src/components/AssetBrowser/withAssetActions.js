@@ -10,6 +10,7 @@ const connectActions = connect(
   null,
   {
     deleteAsset: assetActions.deleteAsset,
+    importAsset: assetActions.importAsset,
     openDialog: dialogActions.openDialog,
   },
 );
