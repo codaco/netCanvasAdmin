@@ -193,9 +193,10 @@ const TieStrengthCensus = {
 
 const Geospatial = {
   sections: [
-    NodeType,
+    FilteredNodeType,
     MapOptions,
     GeospatialPrompts,
+    SkipLogic,
   ],
   documentation: 'https://documentation.networkcanvas.com/interface-documentation/tie-strength-census/', // TODO
 };
