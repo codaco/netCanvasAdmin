@@ -194,6 +194,7 @@ const TieStrengthCensus = {
 const Geospatial = {
   sections: [
     FilteredNodeType,
+    IntroductionPanel,
     MapOptions,
     GeospatialPrompts,
     SkipLogic,
