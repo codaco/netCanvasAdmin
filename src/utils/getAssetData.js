@@ -1,5 +1,5 @@
-import fs from 'fs-extra';
-import { memoize } from 'lodash';
+import fs from "fs-extra";
+import { memoize } from "lodash-es";
 
 const resolver = (sourcePath) => sourcePath;
 
@@ -7,8 +7,11 @@ const getAssetData = (sourcePath, type) => {
   switch (type) {
     default:
       return new Promise((resolve, reject) => {
-        fs.readFile(sourcePath, 'utf8', (error, data) => {
-          if (error) { reject(error); return; }
+        fs.readFile(sourcePath, "utf8", (error, data) => {
+          if (error) {
+            reject(error);
+            return;
+          }
 
           resolve(JSON.parse(data));
         });

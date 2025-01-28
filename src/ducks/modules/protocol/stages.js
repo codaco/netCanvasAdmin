@@ -1,24 +1,24 @@
-import uuid from 'uuid/v1';
-import { get, compact } from 'lodash';
-import { arrayMove } from 'react-sortable-hoc';
-import prune from '@app/utils/prune';
-import { saveableChange } from '../session';
+import { v1 as uuid } from "uuid";
+import { get, compact } from "lodash-es";
+import { arrayMove } from "react-sortable-hoc";
+import prune from "@/utils/prune";
+import { saveableChange } from "../session";
 
-const CREATE_STAGE = 'PROTOCOL/CREATE_STAGE';
-const UPDATE_STAGE = 'PROTOCOL/UPDATE_STAGE';
-const MOVE_STAGE = 'PROTOCOL/MOVE_STAGE';
-const DELETE_STAGE = 'PROTOCOL/DELETE_STAGE';
-const DELETE_PROMPT = 'PROTOCOL/DELETE_PROMPT';
+const CREATE_STAGE = "PROTOCOL/CREATE_STAGE";
+const UPDATE_STAGE = "PROTOCOL/UPDATE_STAGE";
+const MOVE_STAGE = "PROTOCOL/MOVE_STAGE";
+const DELETE_STAGE = "PROTOCOL/DELETE_STAGE";
+const DELETE_PROMPT = "PROTOCOL/DELETE_PROMPT";
 
 const initialState = [];
 const initialStage = {
-  label: '',
+  label: "",
 };
 
 export default function reducer(state = initialState, action = {}) {
   switch (action.type) {
     case CREATE_STAGE: {
-      const insertAtIndex = get(action, 'index', state.length);
+      const insertAtIndex = get(action, "index", state.length);
 
       return [
         ...state.slice(0, insertAtIndex),
@@ -28,7 +28,9 @@ export default function reducer(state = initialState, action = {}) {
     }
     case UPDATE_STAGE:
       return state.map((stage) => {
-        if (stage.id !== action.id) { return stage; }
+        if (stage.id !== action.id) {
+          return stage;
+        }
 
         const previousStage = !action.overwrite ? stage : {};
 
@@ -43,22 +45,28 @@ export default function reducer(state = initialState, action = {}) {
     case MOVE_STAGE:
       return arrayMove(state, action.oldIndex, action.newIndex);
     case DELETE_STAGE:
-      return state.filter((stage) => (stage.id !== action.id));
+      return state.filter((stage) => stage.id !== action.id);
     case DELETE_PROMPT:
       return compact(
         state.map((stage) => {
-          if (stage.id !== action.stageId) { return stage; }
+          if (stage.id !== action.stageId) {
+            return stage;
+          }
 
-          const prompts = stage.prompts.filter(({ id }) => id !== action.promptId);
+          const prompts = stage.prompts.filter(
+            ({ id }) => id !== action.promptId
+          );
 
           // If prompt is empty, we can delete the stage too
-          if (action.deleteEmptyStage && prompts.length === 0) { return null; }
+          if (action.deleteEmptyStage && prompts.length === 0) {
+            return null;
+          }
 
           return {
             ...stage,
             prompts,
           };
-        }),
+        })
       );
     default:
       return state;
@@ -99,8 +107,7 @@ const deletePrompt = (stageId, promptId, deleteEmptyStage = false) => ({
 const createStageThunk = (options, index) => (dispatch) => {
   const stageId = uuid();
   const stage = { ...initialStage, ...options, id: stageId };
-  return dispatch(saveableChange(createStage)(stage, index))
-    .then(() => stage);
+  return dispatch(saveableChange(createStage)(stage, index)).then(() => stage);
 };
 
 const moveStageThunk = saveableChange(moveStage);
@@ -132,8 +139,4 @@ const test = {
   deletePrompt,
 };
 
-export {
-  actionCreators,
-  actionTypes,
-  test,
-};
+export { actionCreators, actionTypes, test };

@@ -1,17 +1,19 @@
-import uuid from 'uuid';
-import { omit } from 'lodash';
-import path from 'path';
-import log from 'electron-log';
-import { importAsset as fsImportAsset } from '@app/utils/protocols';
-import { getWorkingPath } from '@selectors/session';
-import { validateAsset } from '@app/utils/protocols/assetTools';
-import { invalidAssetErrorDialog, importAssetErrorDialog } from '@modules/protocol/utils/dialogs';
-import { saveableChange } from '../session';
+import { v4 as uuid } from "uuid";
+import { omit } from "lodash-es";
+import path from "path";
+import { importAsset as fsImportAsset } from "@/utils/protocols";
+import { getWorkingPath } from "@/selectors/session";
+import { validateAsset } from "@/utils/protocols/assetTools";
+import {
+  invalidAssetErrorDialog,
+  importAssetErrorDialog,
+} from "@/ducks/modules/protocol/utils/dialogs";
+import { saveableChange } from "../session";
 
-const IMPORT_ASSET = 'PROTOCOL/IMPORT_ASSET';
-const IMPORT_ASSET_COMPLETE = 'PROTOCOL/IMPORT_ASSET_COMPLETE';
-const IMPORT_ASSET_FAILED = 'PROTOCOL/IMPORT_ASSET_FAILED';
-const DELETE_ASSET = 'PROTOCOL/DELETE_ASSET';
+const IMPORT_ASSET = "PROTOCOL/IMPORT_ASSET";
+const IMPORT_ASSET_COMPLETE = "PROTOCOL/IMPORT_ASSET_COMPLETE";
+const IMPORT_ASSET_FAILED = "PROTOCOL/IMPORT_ASSET_FAILED";
+const DELETE_ASSET = "PROTOCOL/DELETE_ASSET";
 
 const getNameFromFilename = (filename) => path.parse(filename).base;
 
@@ -58,31 +60,41 @@ const importAssetThunk = (filePath) => (dispatch, getState) => {
   const name = getNameFromFilename(filePath);
 
   dispatch(importAsset(name));
-  log.info('Import asset', filePath);
+  console.info("Import asset", filePath);
 
   if (!workingPath) {
-    const error = new Error('No working path found, possibly no active protocol.');
+    const error = new Error(
+      "No working path found, possibly no active protocol."
+    );
     dispatch(importAssetFailed(filePath, error));
     dispatch(importAssetErrorDialog(error, filePath));
     return Promise.reject(error);
   }
 
   return Promise.resolve()
-    .then(() => validateAsset(filePath)
-      .catch((error) => {
+    .then(() =>
+      validateAsset(filePath).catch((error) => {
         dispatch(invalidAssetErrorDialog(error, filePath));
-        log.error('Validation error', error);
+        console.error("Validation error", error);
         throw error;
-      }))
-    .then(() => fsImportAsset(workingPath, filePath)
-      .catch((error) => {
-        log.error('Import error', error);
+      })
+    )
+    .then(() =>
+      fsImportAsset(workingPath, filePath).catch((error) => {
+        console.error("Import error", error);
         dispatch(importAssetErrorDialog(error, filePath));
         throw error;
-      }))
+      })
+    )
     .then((result) => {
-      log.info('  OK');
-      return dispatch(saveableChange(importAssetComplete)(result.filePath, name, result.assetType));
+      console.info("  OK");
+      return dispatch(
+        saveableChange(importAssetComplete)(
+          result.filePath,
+          name,
+          result.assetType
+        )
+      );
     })
     .catch((error) => dispatch(importAssetFailed(filePath, error)));
 };
@@ -127,8 +139,4 @@ const test = {
   deleteAsset,
 };
 
-export {
-  actionCreators,
-  actionTypes,
-  test,
-};
+export { actionCreators, actionTypes, test };

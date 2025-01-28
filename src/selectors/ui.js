@@ -1,4 +1,4 @@
-import { isEqual } from 'lodash';
+import { isEqual } from "lodash-es";
 
 export const getScreensMessage = (state) => state.ui.screens.message;
 
@@ -10,8 +10,12 @@ export const makeScreenMessageListener = (screen) => {
   return (state) => {
     const message = getScreensMessage(state);
 
-    if (isEqual(message, previousMessage)) { return null; }
-    if (message.screen !== screen) { return null; }
+    if (isEqual(message, previousMessage)) {
+      return null;
+    }
+    if (message.screen !== screen) {
+      return null;
+    }
     previousMessage = message;
 
     return message.params;

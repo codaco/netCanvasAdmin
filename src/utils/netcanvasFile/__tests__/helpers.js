@@ -1,9 +1,20 @@
 /* eslint-env jest */
-import path from 'path';
-import { APP_SCHEMA_VERSION } from '@app/config';
+import path from "path";
+import { APP_SCHEMA_VERSION } from "@/config";
 
-const mockProtocolPath = path.join(__dirname, '..', '..', 'network-canvas', 'integration-tests', 'data', 'mock.netcanvas');
-const mockProtocol = { description: 'test protocol', schemaVersion: APP_SCHEMA_VERSION };
+const mockProtocolPath = path.join(
+  __dirname,
+  "..",
+  "..",
+  "network-canvas",
+  "integration-tests",
+  "data",
+  "mock.netcanvas"
+);
+const mockProtocol = {
+  description: "test protocol",
+  schemaVersion: APP_SCHEMA_VERSION,
+};
 
 const mockAndLog = (targets) => {
   const logger = jest.fn();
@@ -15,7 +26,7 @@ const mockAndLog = (targets) => {
       logger(name, args);
       count += 1;
       const r = result.length ? result[count] : result;
-      if (typeof r === 'function') {
+      if (typeof r === "function") {
         return r(...args);
       }
       return r;
@@ -25,8 +36,4 @@ const mockAndLog = (targets) => {
   return logger;
 };
 
-export {
-  mockProtocolPath,
-  mockProtocol,
-  mockAndLog,
-};
+export { mockProtocolPath, mockProtocol, mockAndLog };
