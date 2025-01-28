@@ -1,32 +1,30 @@
-import { remote } from 'electron';
-
 const defaultOpenDialogOptions = {
-  buttonLabel: 'Open',
-  nameFieldLabel: 'Open:',
-  defaultPath: 'Protocol.netcanvas',
-  filters: [{ name: 'Network Canvas', extensions: ['netcanvas'] }],
-  properties: ['openFile'],
+  buttonLabel: "Open",
+  nameFieldLabel: "Open:",
+  defaultPath: "Protocol.netcanvas",
+  filters: [{ name: "Network Canvas", extensions: ["netcanvas"] }],
+  properties: ["openFile"],
 };
 
 const defaultSaveDialogOptions = {
-  buttonLabel: 'Save',
-  nameFieldLabel: 'Save:',
-  filters: [{ name: 'Network Canvas', extensions: ['netcanvas'] }],
-  properties: ['saveFile'],
+  buttonLabel: "Save",
+  nameFieldLabel: "Save:",
+  filters: [{ name: "Network Canvas", extensions: ["netcanvas"] }],
+  properties: ["saveFile"],
 };
 
 const defaultSaveCopyDialogOptions = {
-  buttonLabel: 'Save Copy',
-  nameFieldLabel: 'Save:',
-  filters: [{ name: 'Network Canvas', extensions: ['netcanvas'] }],
-  properties: ['saveFile'],
+  buttonLabel: "Save Copy",
+  nameFieldLabel: "Save:",
+  filters: [{ name: "Network Canvas", extensions: ["netcanvas"] }],
+  properties: ["saveFile"],
 };
 
 const createDialogOptions = {
-  buttonLabel: 'Create',
-  nameFieldLabel: 'Create as:',
-  defaultPath: 'Protocol.netcanvas',
-  filters: [{ name: 'Protocols', extensions: ['netcanvas'] }],
+  buttonLabel: "Create",
+  nameFieldLabel: "Create as:",
+  defaultPath: "Protocol.netcanvas",
+  filters: [{ name: "Protocols", extensions: ["netcanvas"] }],
 };
 
 /**
@@ -39,10 +37,9 @@ const openDialog = (openDialogOptions = {}) => {
     ...openDialogOptions,
   };
 
-  return remote.dialog.showOpenDialog(
-    remote.getCurrentWindow(),
-    options,
-  );
+  console.log("show open dialog not implemented");
+
+  // return remote.dialog.showOpenDialog(remote.getCurrentWindow(), options);
 };
 
 /**
@@ -55,10 +52,12 @@ const saveDialog = (saveDialogOptions = {}) => {
     ...saveDialogOptions,
   };
 
-  return remote.dialog.showSaveDialog(
-    remote.getCurrentWindow(),
-    options,
-  );
+  console.log("show save dialog not implemented");
+
+  // return remote.dialog.showSaveDialog(
+  //   remote.getCurrentWindow(),
+  //   options,
+  // );
 };
 
 const saveCopyDialog = (saveCopyOptions = {}) => {
@@ -66,9 +65,4 @@ const saveCopyDialog = (saveCopyOptions = {}) => {
   return saveDialog(options);
 };
 
-export {
-  saveDialog,
-  saveCopyDialog,
-  openDialog,
-  createDialogOptions,
-};
+export { saveDialog, saveCopyDialog, openDialog, createDialogOptions };

@@ -1,14 +1,11 @@
-import { remote } from 'electron';
-import { get } from 'lodash';
+import { get } from "lodash-es";
+import packageJson from "../../package.json";
 
-import codenames from '../codenames.json';
+import codenames from "../codenames.json";
 
-const appVersion = remote.app.getVersion();
-const codename = get(codenames, appVersion, '');
+const appVersion = packageJson.version;
+const codename = get(codenames, appVersion, "");
 
 export default appVersion;
 
-export {
-  codename,
-  appVersion,
-};
+export { codename, appVersion };

@@ -1,7 +1,5 @@
-/* eslint-disable import/prefer-default-export */
+export const isMacOS = () => import.meta.platform === "darwin";
 
-export const isMacOS = () => process.platform === 'darwin';
+export const isWindows = () => import.meta.platform === "win32";
 
-export const isWindows = () => process.platform === 'win32';
-
-export const isLinux = () => process.platform === 'linux';
+export const isLinux = () => import.meta.platform === "linux";

@@ -1,13 +1,13 @@
-import uuid from 'uuid';
-import { get } from 'lodash';
+import { v4 as uuid } from "uuid";
+import { get } from "lodash-es";
 
 const defaultOptions = {
   limit: 1000,
   exclude: () => false,
 };
 
-const JUMP = 'TIMELINE/JUMP';
-const RESET = 'TIMELINE/RESET';
+const JUMP = "TIMELINE/JUMP";
+const RESET = "TIMELINE/RESET";
 
 const jump = (locus) => ({
   type: JUMP,
@@ -33,8 +33,10 @@ const createTimelineReducer = (reducer, customOptions) => {
   const timelineReducer = (state = initialState, action) => {
     const { past, present, timeline } = state;
 
-    if (get(action, 'type') === JUMP) {
-      if (!action.payload.locus) { return state; }
+    if (get(action, "type") === JUMP) {
+      if (!action.payload.locus) {
+        return state;
+      }
       const locusIndex = timeline.indexOf(action.payload.locus);
 
       // If point in timeline cannot be found do nothing
@@ -64,7 +66,7 @@ const createTimelineReducer = (reducer, customOptions) => {
     const newPresent = reducer(present, action);
 
     // This is the first run or we are resetting
-    if (timeline.length === 0 || get(action, 'type') === RESET) {
+    if (timeline.length === 0 || get(action, "type") === RESET) {
       const locus = uuid();
 
       return {

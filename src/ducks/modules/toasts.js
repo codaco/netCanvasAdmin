@@ -1,8 +1,8 @@
-import uuid from 'uuid';
+import { v4 as uuid } from "uuid";
 
-const ADD_TOAST = Symbol('PROTOCOL/ADD_TOAST');
-const UPDATE_TOAST = Symbol('PROTOCOL/UPDATE_TOAST');
-const REMOVE_TOAST = Symbol('PROTOCOL/REMOVE_TOAST');
+const ADD_TOAST = Symbol("PROTOCOL/ADD_TOAST");
+const UPDATE_TOAST = Symbol("PROTOCOL/UPDATE_TOAST");
+const REMOVE_TOAST = Symbol("PROTOCOL/REMOVE_TOAST");
 
 const initialState = [];
 
@@ -33,14 +33,13 @@ const removeToast = (id) => ({
 function reducer(state = initialState, action = {}) {
   switch (action.type) {
     case ADD_TOAST:
-      return [
-        ...state,
-        { ...action.toast },
-      ];
+      return [...state, { ...action.toast }];
     case UPDATE_TOAST: {
       return [
         ...state.map((toast) => {
-          if (toast.id !== action.id) { return toast; }
+          if (toast.id !== action.id) {
+            return toast;
+          }
           return {
             ...toast,
             ...action.toast,
@@ -49,9 +48,7 @@ function reducer(state = initialState, action = {}) {
       ];
     }
     case REMOVE_TOAST:
-      return [
-        ...state.filter((toast) => toast.id !== action.id),
-      ];
+      return [...state.filter((toast) => toast.id !== action.id)];
     default:
       return state;
   }
@@ -68,9 +65,6 @@ const actionTypes = {
   REMOVE_TOAST,
 };
 
-export {
-  actionCreators,
-  actionTypes,
-};
+export { actionCreators, actionTypes };
 
 export default reducer;

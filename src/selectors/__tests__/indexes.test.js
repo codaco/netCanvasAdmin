@@ -1,6 +1,6 @@
 /* eslint-env jest */
 
-import { getMockState } from '@app/__tests__/helpers';
+import { getMockState } from "@/__tests__/helpers";
 
 import {
   getVariableIndex,
@@ -8,13 +8,13 @@ import {
   getNodeIndex,
   getEdgeIndex,
   utils,
-} from '../indexes';
+} from "../indexes";
 
 const testState = getMockState();
 
-describe('indexes selectors', () => {
-  describe('utils.buildSearch()', () => {
-    it('correctly builds the Set', () => {
+describe("indexes selectors", () => {
+  describe("utils.buildSearch()", () => {
+    it("correctly builds the Set", () => {
       const index1 = {
         foo: 1,
         bar: 2,
@@ -37,32 +37,32 @@ describe('indexes selectors', () => {
     });
   });
 
-  describe('getVariableIndex()', () => {
-    it('extracts variables into index', () => {
+  describe("getVariableIndex()", () => {
+    it("extracts variables into index", () => {
       const subject = getVariableIndex(testState);
 
       expect(subject).toMatchSnapshot();
     });
   });
 
-  describe('getAssetIndex()', () => {
-    it('extracts asset references into index', () => {
+  describe("getAssetIndex()", () => {
+    it("extracts asset references into index", () => {
       const subject = getAssetIndex(testState);
 
       expect(subject).toMatchSnapshot();
     });
   });
 
-  describe('getNodeIndex()', () => {
-    it('extracts subject references into type index', () => {
+  describe("getNodeIndex()", () => {
+    it("extracts subject references into type index", () => {
       const subject = getNodeIndex(testState);
 
       expect(subject).toMatchSnapshot();
     });
   });
 
-  describe('getEdgeIndex()', () => {
-    it('extracts subject references into type index', () => {
+  describe("getEdgeIndex()", () => {
+    it("extracts subject references into type index", () => {
       const subject = getEdgeIndex(testState);
 
       expect(subject).toMatchSnapshot();

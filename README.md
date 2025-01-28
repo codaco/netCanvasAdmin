@@ -1,108 +1,50 @@
-# Architect [![Build Status](https://travis-ci.org/complexdatacollective/Architect.svg?branch=master)](https://travis-ci.org/complexdatacollective/Architect)
+# React + TypeScript + Vite
 
-Network Canvas Architect is a survey design tool for the [Network Canvas](https://networkcanvas.com) suite of applications. It is built on [Electron](https://electronjs.org/) and [React](https://reactjs.org/).
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-**This tool is in maintainance mode.** We are not actively developing new features, but will continue to fix bugs and accept pull requests. Community contributions are very welcome!
+Currently, two official plugins are available:
 
-See the [Network Canvas](https://networkcanvas.com) website for more information.
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-For questions and support, please visit the [Network Canvas User Community](https://community.networkcanvas.com/).
+## Expanding the ESLint configuration
 
-## Setting up a development environment
+If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
 
-### Prerequisites
+- Configure the top-level `parserOptions` property like this:
 
-- [Node.js](https://nodejs.org/en/) (v14.21.3)
-- [npm](https://www.npmjs.com/) (v8.19.4)
-- [Git](https://git-scm.com/)
-- [Python](https://www.python.org/) (v3.10.12)
-
-### Installation
-
-1. Clone the repository
-
-```sh
-git clone https://github.com/complexdatacollective/Architect.git
+```js
+export default tseslint.config({
+  languageOptions: {
+    // other options...
+    parserOptions: {
+      project: ['./tsconfig.node.json', './tsconfig.app.json'],
+      tsconfigRootDir: import.meta.dirname,
+    },
+  },
+})
 ```
 
-2. Fetch submodules
+- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
+- Optionally add `...tseslint.configs.stylisticTypeChecked`
+- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
 
-```sh
-git submodule update --init --recursive -f
-```
+```js
+// eslint.config.js
+import react from 'eslint-plugin-react'
 
-3. Install NPM packages
-
-```sh
-npm install
-```
-
-Note: for Apple Silicon users, you need to install the `electron` package manually:
-
-```sh
-  npm install electron --arch=x86
-```
-
-# Operation
-
-| `npm run <script>`              | Description                                                                                                                                  |
-| ------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| `start:architect:electron`      | Serves your app for consumption by electron.                                                                                                 |
-| `start:network-canvas:electron` | Serves network canvas for consumption by previewer.                                                                                          |
-| `preelectron:dev`               | Copies the electron source to `./electron-dev` (must be run only when setting up the repo for the first time, or bumping the version number) |
-| `dev:electron`                  | Runs electron window with contents of `start:architect:electron` and `start:network-canvas:electron`(must be run concurrently)               |
-| `build`                         | Compiles assets and prepares app for production in the /build directory.                                                                     |
-| `lint`                          | Lints js/scss                                                                                                                                |
-| `test`                          | Runs testing suite                                                                                                                           |
-| `preflight`                     | Runs linting & testing. Useful as a prepush/build hook                                                                                       |
-| `dist:mac`                      | Build and publish OS X verison                                                                                                               |
-| `dist:linux`                    | Build and publish Linux version                                                                                                              |
-| `dist:win`                      | Build and publish Windows version                                                                                                            |
-| `dist:all`                      | Build and publish all platforms                                                                                                              |
-| `update-submodules`             | Update git submodules                                                                                                                        |
-
-### Bump version
-
-Supply a version mask with x for unchanged values:
-
-`npm run [x.x.1] [codename]`
-
-e.g.
-
-`npm run x.1.0 NameOfVersion`
-
-### Development workflow in Electron
-
-There are two additional tasks to enable development within an electron app natively:
-
-1. `npm run start:architect:electron`: to start the webpack dev server
-
-- Note: must be running on port 3003.
-
-1. `npm run start:network-canvas:electron`: to start the webpack dev server
-
-- Note: must be running on port 3000.
-
-2. `npm run preelectron:dev` Copies the electron source to `./electron-dev` (in another terminal session)
-
-- Note: This step only needs to be taken when setting up the repo for the first time, or when bumping the version number.
-
-3. `npm run dev:electron` Runs the electron app from there
-
-## Application Structure
-
-```
-.
-├── build                    # Prod assets
-├── config                   # Project and build configurations (webpack, env config)
-├── public                   # Static public assets
-│   └── index.html           # Static entry point
-├── src                      # Application source code
-│   ├── index.js             # Application bootstrap and rendering
-│   ├── routes.js            # App Route Definitions
-│   ├── components           # Contains directories for components
-│   ├── containers           # Contains directories for containers for native and base classes
-│   ├── reducers             # Reducers for data stores
-│   ├── ducks                # Middleware, modules (ducks-style with actions, reducers, and action creators), and store
-│   └── utils                # Helpers and utils
+export default tseslint.config({
+  // Set the react version
+  settings: { react: { version: '18.3' } },
+  plugins: {
+    // Add the react plugin
+    react,
+  },
+  rules: {
+    // other rules...
+    // Enable its recommended rules
+    ...react.configs.recommended.rules,
+    ...react.configs['jsx-runtime'].rules,
+  },
+})
 ```

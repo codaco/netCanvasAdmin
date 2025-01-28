@@ -1,7 +1,7 @@
-import { getFormValues } from 'redux-form';
-import { getWorkingPath } from '@selectors/session';
-import { getProtocol } from '@selectors/protocol';
-import previewDriver from '@app/utils/previewDriver';
+import { getFormValues } from "redux-form";
+import { getWorkingPath } from "@/selectors/session";
+import { getProtocol } from "@/selectors/protocol";
+import previewDriver from "@/utils/previewDriver";
 
 const getStageIndex = (protocol, stageMeta) => {
   if (stageMeta.id) {
@@ -20,7 +20,9 @@ const getDraftStages = (protocol, stageMeta, draftStage) => {
 
   if (stageMeta.id) {
     return stages.map((stage) => {
-      if (stage.id === draftStage.id) { return draftStage; }
+      if (stage.id === draftStage.id) {
+        return draftStage;
+      }
 
       return stage;
     });
@@ -35,11 +37,11 @@ const getDraftStages = (protocol, stageMeta, draftStage) => {
   ];
 };
 
-const SET_ZOOM = 'PREVIEW/ZOOM';
-const REFRESH_PREVIEW = 'PREVIEW/REFRESH_PREVIEW';
-const PREVIEW_DRAFT = 'PREVIEW/PREVIEW_DRAFT';
-const CLOSE_PREVIEW = 'PREVIEW/CLOSE_PREVIEW';
-const CLEAR_PREVIEW = 'PREVIEW/CLEAR_PREVIEW';
+const SET_ZOOM = "PREVIEW/ZOOM";
+const REFRESH_PREVIEW = "PREVIEW/REFRESH_PREVIEW";
+const PREVIEW_DRAFT = "PREVIEW/PREVIEW_DRAFT";
+const CLOSE_PREVIEW = "PREVIEW/CLOSE_PREVIEW";
+const CLEAR_PREVIEW = "PREVIEW/CLEAR_PREVIEW";
 
 const zoom = (zoomFactor) => ({
   type: SET_ZOOM,
@@ -71,13 +73,13 @@ const previewDraft = (draft, stageIndex) => (dispatch, getState) => {
   const draftProtocol = {
     ...draft,
     /**
-       * This allows assets to work correctly in the Network Canvas preview.
-       *
-       * Network canvas uses relative paths for the assets:// protocol, whereas
-       * Architect uses full paths. Since Network Canvas prepares urls as:
-       * `assets://${protocolUID}/assets/${asset}` this allows us to load files
-       * from the correct location.
-       */
+     * This allows assets to work correctly in the Network Canvas preview.
+     *
+     * Network canvas uses relative paths for the assets:// protocol, whereas
+     * Architect uses full paths. Since Network Canvas prepares urls as:
+     * `assets://${protocolUID}/assets/${asset}` this allows us to load files
+     * from the correct location.
+     */
     uid: workingPath,
   };
 
@@ -118,7 +120,4 @@ const actionCreators = {
   refresh,
 };
 
-export {
-  actionTypes,
-  actionCreators,
-};
+export { actionTypes, actionCreators };

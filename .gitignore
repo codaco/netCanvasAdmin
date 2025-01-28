@@ -1,24 +1,12 @@
-.DS_Store
-/node_modules
-/bower_components
-/platforms
-/coverage
-/release-builds
-/www
-/app
-/.idea
-/docs-build
-/plugins
-
-# local dev build output
-electron-dev/
-
+# Logs
+logs
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-yarn.lock
+pnpm-debug.log*
 
-*.zip
-*.pbxproj
-.vscode
-Icon^M^M
+node_modules
+
+# Editor directories and files
+.DS_Store
