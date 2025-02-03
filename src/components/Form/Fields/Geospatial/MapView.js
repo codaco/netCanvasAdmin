@@ -95,11 +95,9 @@ const MapView = ({ mapOptions, onChange, close }) => {
 
     initializeMap();
 
+    // eslint-disable-next-line consistent-return
     return () => {
-      if (mapRef.current) {
-        mapRef.current.remove();
-        mapRef.current = null;
-      }
+      mapRef.current?.remove();
     };
   }, [mapOptions, mapboxAPIKey]);
 
