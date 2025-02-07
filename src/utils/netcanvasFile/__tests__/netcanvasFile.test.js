@@ -4,7 +4,7 @@ import fse from 'fs-extra';
 import uuid from 'uuid';
 import { APP_SCHEMA_VERSION } from '@app/config';
 import { extract, archive } from '@app/utils/protocols/lib/archive';
-import migrateProtocol from '@app/protocol-validation/migrations/migrateProtocol';
+import migrateProtocol from '@codaco/protocol-validation';
 import validateProtocol from '@app/utils/validateProtocol';
 import { pruneProtocol } from '@app/utils/prune';
 import {

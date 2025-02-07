@@ -1,6 +1,5 @@
 import log from 'electron-log';
-import { validateSchema, validateLogic } from '../protocol-validation/validation';
-import { errToString } from '../protocol-validation/validation/helpers';
+import { validateSchema, validateLogic, errToString } from '@codaco/protocol-validation';
 
 const asyncValidateSchema = async (protocol) => new Promise((resolve, reject) => {
   try {
@@ -23,8 +22,6 @@ const asyncValidateLogic = async (protocol) => new Promise((resolve, reject) => 
 const validateProtocol = (protocol) => {
   log.debug('validateProtocol()');
 
-  // TODO: REMOVE THIS when we bring over the new schema
-  return Promise.resolve(protocol);
   return Promise.all([
     asyncValidateLogic(protocol),
     asyncValidateSchema(protocol),

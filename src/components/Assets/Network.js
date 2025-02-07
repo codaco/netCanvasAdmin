@@ -3,7 +3,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { compose } from 'redux';
 import PropTypes from 'prop-types';
 import { get } from 'lodash';
-import { getVariableNamesFromNetwork } from '@app/protocol-validation/validation/validateExternalData';
+import { getVariableNamesFromNetwork } from '@codaco/protocol-validation';
 import withAssetPath from './withAssetPath';
 import { networkReader } from '../../utils/protocols/assetTools';
 import Table from './Table';

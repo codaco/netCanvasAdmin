@@ -4,7 +4,7 @@ import path from 'path';
 import { first, get } from 'lodash';
 import csvParse from 'csv-parse';
 import { readFile } from 'fs-extra';
-import { getVariableNamesFromNetwork } from '@app/protocol-validation/validation/validateExternalData';
+import { getVariableNamesFromNetwork } from '@codaco/protocol-validation';
 
 /**
 * Generate a switching function that takes a filepath as an argument
