@@ -199,7 +199,7 @@ const Geospatial = {
     GeospatialPrompts,
     SkipLogic,
   ],
-  documentation: 'https://documentation.networkcanvas.com/interface-documentation/tie-strength-census/', // TODO
+  documentation: 'https://documentation.networkcanvas.com/interface-documentation/geospatial/',
 };
 
 const interfaces = {

@@ -14,6 +14,8 @@ import GeoAPIKey from '../Form/Fields/Geospatial/GeoAPIKey';
 import MapSelection from '../Form/Fields/Geospatial/MapSelection';
 import useVariablesFromExternalData from '../../hooks/useVariablesFromExternalData';
 
+import ExternalLink from '../ExternalLink';
+
 // TODO: move this to a shared location -- protocol-consts?
 const mapboxStyleOptions = [
   { label: 'Standard', value: 'mapbox://styles/mapbox/standard' },
@@ -42,7 +44,16 @@ const MapOptions = (props) => {
         summary={(
           <p>
             This interface requires an API key from Mapbox.
-            To get one, visit https://mapbox.com or read our documentation on the interface.
+            For more information about Mapbox and retreiving an API Key,
+            read our
+            {' '}
+            <ExternalLink
+              href="https://documentation.networkcanvas.com/interface-documentation/geospatial/"
+            >
+              documentation
+            </ExternalLink>
+            {' '}
+            on the interface.
           </p>
     )}
       >
