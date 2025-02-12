@@ -4,7 +4,7 @@ import path from 'path';
 import { get } from 'lodash';
 import csv from 'csvtojson';
 import fs from 'fs-extra';
-import { getVariableNamesFromNetwork, validateNames } from '@app/protocol-validation/validation/validateExternalData';
+import { getVariableNamesFromNetwork, validateNames } from '@codaco/protocol-validation';
 import { getSupportedAssetType } from '@app/utils/protocols/importAsset';
 
 /**
@@ -100,4 +100,10 @@ export const validateAsset = async (filePath) => {
   }
 
   return true;
+};
+
+export const getGeoJsonVariables = async (filePath) => {
+  // process GeoJSON
+  const geoJson = await fs.readJson(filePath);
+  return Object.keys(geoJson.features[0].properties);
 };

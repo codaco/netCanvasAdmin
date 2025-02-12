@@ -12,6 +12,7 @@ const IMPORT_ASSET = 'PROTOCOL/IMPORT_ASSET';
 const IMPORT_ASSET_COMPLETE = 'PROTOCOL/IMPORT_ASSET_COMPLETE';
 const IMPORT_ASSET_FAILED = 'PROTOCOL/IMPORT_ASSET_FAILED';
 const DELETE_ASSET = 'PROTOCOL/DELETE_ASSET';
+const ADD_API_KEY_ASSET = 'PROTOCOL/ADD_API_KEY_ASSET';
 
 const getNameFromFilename = (filename) => path.parse(filename).base;
 
@@ -32,7 +33,7 @@ const importAsset = (filename) => ({
  * @param {string} filename - Name of file
  * @param {string} fileType - File MIME type
  */
-const importAssetComplete = (filename, name, assetType) => ({
+export const importAssetComplete = (filename, name, assetType) => ({
   id: uuid(),
   type: IMPORT_ASSET_COMPLETE,
   name,
@@ -87,6 +88,17 @@ const importAssetThunk = (filePath) => (dispatch, getState) => {
     .catch((error) => dispatch(importAssetFailed(filePath, error)));
 };
 
+/**
+ * @param {string} name - The name of the API key
+ * @param {string} value - The value of the API key
+ */
+export const addApiKeyAsset = (name, value) => ({
+  type: ADD_API_KEY_ASSET,
+  id: uuid(),
+  name,
+  value,
+});
+
 const initialState = {};
 
 export default function reducer(state = initialState, action = {}) {
@@ -105,6 +117,17 @@ export default function reducer(state = initialState, action = {}) {
       // Don't delete from disk, this allows us to rollback the protocol.
       // Disk changes should be commited on save.
       return omit(state, action.id);
+    case ADD_API_KEY_ASSET:
+      return {
+        ...state,
+        [action.id]: {
+          id: action.id,
+          type: 'apikey',
+          name: action.name,
+          value: action.value,
+        },
+      };
+
     default:
       return state;
   }
@@ -113,6 +136,7 @@ export default function reducer(state = initialState, action = {}) {
 const actionCreators = {
   importAsset: importAssetThunk,
   deleteAsset: saveableChange(deleteAsset),
+  addApiKeyAsset: saveableChange(addApiKeyAsset),
 };
 
 const actionTypes = {
@@ -120,6 +144,7 @@ const actionTypes = {
   IMPORT_ASSET_COMPLETE,
   IMPORT_ASSET_FAILED,
   DELETE_ASSET,
+  ADD_API_KEY_ASSET,
 };
 
 const test = {

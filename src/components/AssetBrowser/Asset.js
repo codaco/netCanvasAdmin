@@ -15,6 +15,8 @@ const ASSET_COMPONENTS = {
   video: Thumbnails.Video,
   audio: Thumbnails.Audio,
   network: Thumbnails.Network,
+  apikey: Thumbnails.APIKey,
+  geojson: Thumbnails.GeoJSON,
 };
 
 const Asset = ({

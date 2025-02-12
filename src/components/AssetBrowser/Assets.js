@@ -11,6 +11,8 @@ const ASSET_TYPES = [
   { label: 'Video', value: 'video' },
   { label: 'Audio', value: 'audio' },
   { label: 'Network', value: 'network' },
+  { label: 'GeoJSON', value: 'geojson' },
+  { label: 'API Key', value: 'apikey' },
 ];
 
 const Assets = ({
@@ -32,21 +34,26 @@ const Assets = ({
     source,
     type: thumbnailType,
     isUsed,
-  }) => (
-    <div className="asset-browser-assets__asset" key={id}>
-      <Asset
-        id={id}
-        name={name}
-        source={source}
-        type={thumbnailType}
-        isUsed={isUsed}
-        onClick={onSelect}
-        onPreview={onPreview}
-        onDownload={onDownload}
-        onDelete={handleDelete}
-      />
-    </div>
-  ));
+  }) => {
+    // disable download for apikey type
+    const handleDownload = (thumbnailType === 'apikey') ? null : onDownload;
+
+    return (
+      <div className="asset-browser-assets__asset" key={id}>
+        <Asset
+          id={id}
+          name={name}
+          source={source}
+          type={thumbnailType}
+          isUsed={isUsed}
+          onClick={onSelect}
+          onPreview={onPreview}
+          onDownload={handleDownload}
+          onDelete={handleDelete}
+        />
+      </div>
+    );
+  });
 
   return (
     <div className="asset-browser-assets">

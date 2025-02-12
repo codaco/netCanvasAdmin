@@ -25,3 +25,5 @@ export { default as SortOptionsForExternalData } from './SortOptionsForExternalD
 export { default as SkipLogic } from './SkipLogic';
 export { default as Title } from './Title';
 export { default as InterviewScript } from './InterviewScript';
+export { default as MapOptions } from './MapOptions';
+export { default as GeospatialPrompts } from './GeospatialPrompts/GeospatialPrompts';

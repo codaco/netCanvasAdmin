@@ -7,7 +7,7 @@ import axios from 'axios';
 import { APP_SCHEMA_VERSION, SAMPLE_PROTOCOL_URL } from '@app/config';
 import * as netcanvasFile from '@app/utils/netcanvasFile';
 import validateProtocol from '@app/utils/validateProtocol';
-import getMigrationNotes from '@app/protocol-validation/migrations/getMigrationNotes';
+import { getMigrationNotes } from '@codaco/protocol-validation';
 import { getHasUnsavedChanges } from '@selectors/session';
 import { getProtocol } from '@selectors/protocol';
 import {

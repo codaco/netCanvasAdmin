@@ -1,6 +1,5 @@
 import log from 'electron-log';
-import { validateSchema, validateLogic } from '../protocol-validation/validation';
-import { errToString } from '../protocol-validation/validation/helpers';
+import { validateSchema, validateLogic, errToString } from '@codaco/protocol-validation';
 
 const asyncValidateSchema = async (protocol) => new Promise((resolve, reject) => {
   try {
