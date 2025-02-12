@@ -16,7 +16,6 @@ import useVariablesFromExternalData from '../../hooks/useVariablesFromExternalDa
 
 import ExternalLink from '../ExternalLink';
 
-// TODO: move this to a shared location -- protocol-consts?
 const mapboxStyleOptions = [
   { label: 'Standard', value: 'mapbox://styles/mapbox/standard' },
   { label: 'Standard Satellite', value: 'mapbox://styles/mapbox/standard-satellite' },
@@ -35,7 +34,7 @@ const MapOptions = (props) => {
 
   const { variables: variableOptions } = useVariablesFromExternalData(mapOptions?.dataSourceAssetId, true, 'geojson');
 
-  const { paletteName, paletteSize } = { paletteName: ['ord-color-seq'], paletteSize: 8 }; // TODO: what palette should this be?
+  const { paletteName, paletteSize } = { paletteName: ['ord-color-seq'], paletteSize: 8 };
 
   return (
     <>
